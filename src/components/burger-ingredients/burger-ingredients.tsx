@@ -1,17 +1,23 @@
+import { ingredientTypeValues } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 
-import type { TIngredient } from '@utils/types';
+import { IngredientsList } from './components';
+
+import type { TIngredientType, TIngredientWithCounter } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
 type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
+  ingredients: TIngredientWithCounter[];
+  onAddIngredient: (ingredient: TIngredientWithCounter) => void;
 };
 
 export const BurgerIngredients = ({
   ingredients,
+  onAddIngredient,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  console.log(ingredients);
+  const filtredIngredients = (key: TIngredientType): TIngredientWithCounter[] =>
+    ingredients.filter(({ type }) => type === key);
 
   return (
     <section className={styles.burger_ingredients}>
@@ -27,15 +33,6 @@ export const BurgerIngredients = ({
             Булки
           </Tab>
           <Tab
-            value="main"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Начинки
-          </Tab>
-          <Tab
             value="sauce"
             active={false}
             onClick={() => {
@@ -44,8 +41,28 @@ export const BurgerIngredients = ({
           >
             Соусы
           </Tab>
+          <Tab
+            value="main"
+            active={false}
+            onClick={() => {
+              /* TODO */
+            }}
+          >
+            Начинки
+          </Tab>
         </ul>
       </nav>
+      <ul className={`custom-scroll ${styles.ingredients_list}`}>
+        {ingredientTypeValues.map(({ id, title, type }) => (
+          <li key={id}>
+            <IngredientsList
+              onAddIngredient={onAddIngredient}
+              title={title}
+              ingredients={filtredIngredients(type)}
+            />
+          </li>
+        ))}
+      </ul>
     </section>
   );
 };
