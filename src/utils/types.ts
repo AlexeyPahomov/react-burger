@@ -12,3 +12,13 @@ export type TIngredient = {
   image_mobile: string;
   __v: number;
 };
+
+export type TIngredientWithCounter = TIngredient & {
+  count: number;
+};
+
+export type TBurgerIngredient = TIngredient & {
+  id: string;
+};
+
+export type TIngredientType = 'bun' | 'sauce' | 'main';
