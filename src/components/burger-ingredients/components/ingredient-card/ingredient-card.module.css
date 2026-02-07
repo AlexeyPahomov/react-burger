@@ -1,0 +1,32 @@
+.ingredient_card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 272px;
+  cursor: pointer;
+}
+
+.ingredient_counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.ingredient_img {
+  width: 240px;
+  height: 120px;
+  margin: 0 16px;
+}
+
+.ingredient_price {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.ingredient_name {
+  height: 48px;
+  text-align: center;
+}
