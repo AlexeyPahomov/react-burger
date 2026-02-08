@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { ingredientsApi } from '@/utils/constants';
+import { Preloader } from '@krgaa/react-developer-burger-ui-components';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { ingredients } from '@utils/ingredients';
 
 import type {
   TIngredient,
@@ -15,10 +16,30 @@ import type {
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [ingredients, setIngredients] = useState<TIngredientWithCounter[]>([]);
   const [burger, setBurger] = useState<TBurgerIngredient[]>([]);
-  const [ingredientsWithCounter, setIngredientsWithCounter] = useState<
-    TIngredientWithCounter[]
-  >(ingredients.map((ingredient) => ({ ...ingredient, count: 0 })));
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetch(ingredientsApi)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Статус ответа: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(({ data }: { data: TIngredient[] }) => {
+        setIngredients(data.map((ingredient) => ({ ...ingredient, count: 0 })));
+      })
+      .catch((e) => {
+        console.error('Ошибка загрузки данных:', e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   const handleAddIngredient = (ingredient: TIngredient): void => {
     let bun: TIngredient | undefined = undefined;
@@ -33,15 +54,13 @@ export const App = (): React.JSX.Element => {
       { ...ingredient, id: uuidv4() },
     ]);
 
-    const foundIngredient = ingredientsWithCounter.find(
-      ({ _id }) => _id === ingredient._id
-    );
+    const foundIngredient = ingredients.find(({ _id }) => _id === ingredient._id);
     if (foundIngredient !== undefined) {
       if (bun === undefined) {
         foundIngredient.count += 1;
       } else {
         if (!isSameBun) {
-          ingredientsWithCounter.forEach((i) => {
+          ingredients.forEach((i) => {
             if (i.type === 'bun') {
               i.count = 0;
             }
@@ -51,7 +70,7 @@ export const App = (): React.JSX.Element => {
       }
     }
 
-    setIngredientsWithCounter(ingredientsWithCounter);
+    setIngredients(ingredients);
   };
 
   const handleRemoveIngredient = (id: TBurgerIngredient['id']): void => {
@@ -60,30 +79,34 @@ export const App = (): React.JSX.Element => {
 
     setBurger(burger.filter((item) => item.id !== id));
 
-    const ingredientWithCount = ingredientsWithCounter.find(
-      ({ _id }) => _id === burgerIngredient._id
-    );
-    if (ingredientWithCount !== undefined) {
-      ingredientWithCount.count += -1;
+    const ingredient = ingredients.find(({ _id }) => _id === burgerIngredient._id);
+    if (ingredient !== undefined) {
+      ingredient.count += -1;
     }
   };
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
-      <main className={`${styles.main} pl-5 pr-5`}>
-        <BurgerIngredients
-          onAddIngredient={handleAddIngredient}
-          ingredients={ingredientsWithCounter}
-        />
-        <BurgerConstructor
-          onRemoveIngredient={handleRemoveIngredient}
-          ingredients={burger}
-        />
-      </main>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <>
+          <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+            Соберите бургер
+          </h1>
+          <main className={`${styles.main} pl-5 pr-5`}>
+            <BurgerIngredients
+              onAddIngredient={handleAddIngredient}
+              ingredients={ingredients}
+            />
+            <BurgerConstructor
+              onRemoveIngredient={handleRemoveIngredient}
+              ingredients={burger}
+            />
+          </main>
+        </>
+      )}
     </div>
   );
 };
