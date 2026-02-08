@@ -5,7 +5,6 @@ import {
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import type { TBurgerIngredient } from '@utils/types';
 
@@ -22,49 +21,50 @@ export const BurgerConstructor = ({
 }: TBurgerConstructorProps): React.JSX.Element => {
   const totalPrice = ingredients.reduce((sum, item) => sum + item.price, 0);
 
-  const ingredientsToShow = useMemo(() => {
-    const itemsToShow: TBurgerIngredient[] = [];
-    const bun = ingredients.find(({ type }) => type === 'bun');
-    if (bun === undefined) {
-      ingredients.forEach((ingredient) => {
-        itemsToShow.push(ingredient);
-      });
-    } else {
-      itemsToShow.push({ ...bun, name: `${bun.name} (верх)`, id: uuidv4() });
-      ingredients
-        .filter(({ type }) => type !== 'bun')
-        .forEach((ingredient) => {
-          itemsToShow.push(ingredient);
-        });
-      itemsToShow.push({ ...bun, name: `${bun.name} (низ)`, id: uuidv4() });
-    }
-
-    return itemsToShow;
-  }, [ingredients]);
+  const bun = useMemo(
+    () => ingredients.find(({ type }) => type === 'bun'),
+    [ingredients]
+  );
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
-      <ul className="custom-scroll">
-        {ingredientsToShow.map(({ id, name, image, price, type }, indx) => (
-          <li key={id}>
-            {type !== 'bun' && <DragIcon type="primary" className="mr-2" />}
-            <ConstructorElement
-              handleClose={() => onRemoveIngredient(id)}
-              text={name}
-              thumbnail={image}
-              price={price}
-              isLocked={type === 'bun'}
-              type={
-                !indx
-                  ? 'top'
-                  : indx === ingredientsToShow.length - 1
-                    ? 'bottom'
-                    : undefined
-              }
-            />
-          </li>
-        ))}
-      </ul>
+      <div className={`${styles.column}`}>
+        {bun === undefined ? null : (
+          <ConstructorElement
+            text={`${bun.name} (верх)`}
+            thumbnail={bun.image}
+            price={bun.price}
+            isLocked
+            type={'top'}
+            extraClass={`mb-4 mr-4 ${styles.locked}`}
+          />
+        )}
+        <ul className="custom-scroll">
+          {ingredients
+            .filter(({ type }) => type !== 'bun')
+            .map(({ id, name, image, price }) => (
+              <li key={id}>
+                <DragIcon type="primary" className="mr-2" />
+                <ConstructorElement
+                  handleClose={() => onRemoveIngredient(id)}
+                  text={name}
+                  thumbnail={image}
+                  price={price}
+                />
+              </li>
+            ))}
+        </ul>
+        {bun === undefined ? null : (
+          <ConstructorElement
+            text={`${bun.name} (низ)`}
+            thumbnail={bun.image}
+            price={bun.price}
+            isLocked
+            type={'bottom'}
+            extraClass={`mt-4 mr-4 ${styles.locked}`}
+          />
+        )}
+      </div>
       <footer className="mt-10">
         <div className={styles.price}>
           <span className="text text_type_digits-medium">{totalPrice}</span>
