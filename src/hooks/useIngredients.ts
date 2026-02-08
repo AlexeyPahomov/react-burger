@@ -1,8 +1,7 @@
+import { ingredientsApi } from '@/utils/constants';
 import { useEffect, useState } from 'react';
 
-import { ingredientsApi } from './constants';
-
-import type { TIngredient, TIngredientWithCounter } from './types';
+import type { TIngredient, TIngredientWithCounter } from '../utils/types';
 
 type UseIngredientsResult = {
   isLoading: boolean;
