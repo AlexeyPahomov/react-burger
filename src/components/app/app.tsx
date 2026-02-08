@@ -1,45 +1,20 @@
-import { ingredientsApi } from '@/utils/constants';
+import { useIngredients } from '@/utils/useIngredients';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
-import type {
-  TIngredient,
-  TIngredientWithCounter,
-  TBurgerIngredient,
-} from '@utils/types';
+import type { TIngredient, TBurgerIngredient } from '@utils/types';
 
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [ingredients, setIngredients] = useState<TIngredientWithCounter[]>([]);
+  const { ingredients, setIngredients, isLoading } = useIngredients();
+
   const [burger, setBurger] = useState<TBurgerIngredient[]>([]);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    fetch(ingredientsApi)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Статус ответа: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(({ data }: { data: TIngredient[] }) => {
-        setIngredients(data.map((ingredient) => ({ ...ingredient, count: 0 })));
-      })
-      .catch((e) => {
-        console.error('Ошибка загрузки данных:', e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
 
   const handleAddIngredient = (ingredient: TIngredient): void => {
     let bun: TIngredient | undefined = undefined;
