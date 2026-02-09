@@ -36,6 +36,11 @@
 .locked {
   display: flex;
   align-self: flex-end;
+  cursor: default;
+}
+
+.enable {
+  cursor: pointer;
 }
 
 .column {
