@@ -13,7 +13,8 @@
     max-height: calc(100vh - 610px);
     margin: 0;
     padding: 0;
-    overflow: auto;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
     list-style-type: none;
 
     li {
