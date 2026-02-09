@@ -4,7 +4,9 @@ import {
   CurrencyIcon,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+
+import { OrderDetails } from './components/order-details/order-details';
 
 import type { TBurgerIngredient } from '@utils/types';
 
@@ -26,8 +28,17 @@ export const BurgerConstructor = ({
     [ingredients]
   );
 
+  const [isOpenOrder, setIsOpenOrder] = useState(false);
+  const openOrder = (): void => {
+    setIsOpenOrder(true);
+  };
+  const closeOrder = (): void => {
+    setIsOpenOrder(false);
+  };
+
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
+      <OrderDetails isOpen={isOpenOrder} onClose={closeOrder} />
       <div className={`${styles.column}`}>
         {bun === undefined ? null : (
           <ConstructorElement
@@ -42,14 +53,15 @@ export const BurgerConstructor = ({
         <ul className="custom-scroll">
           {ingredients
             .filter(({ type }) => type !== 'bun')
-            .map(({ id, name, image, price }) => (
-              <li key={id}>
+            .map((ingredient) => (
+              <li key={ingredient.id}>
                 <DragIcon type="primary" className="mr-2" />
                 <ConstructorElement
-                  handleClose={() => onRemoveIngredient(id)}
-                  text={name}
-                  thumbnail={image}
-                  price={price}
+                  handleClose={() => onRemoveIngredient(ingredient.id)}
+                  text={ingredient.name}
+                  thumbnail={ingredient.image}
+                  price={ingredient.price}
+                  extraClass={`${styles.enable}`}
                 />
               </li>
             ))}
@@ -70,7 +82,7 @@ export const BurgerConstructor = ({
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" className={styles.price_icon} />
         </div>
-        <Button size="large" type="primary" htmlType="button">
+        <Button onClick={openOrder} size="large" type="primary" htmlType="button">
           Оформить заказ
         </Button>
       </footer>

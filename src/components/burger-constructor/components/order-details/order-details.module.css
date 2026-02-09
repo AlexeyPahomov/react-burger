@@ -1,0 +1,8 @@
+.icon_check {
+  width: 80px;
+  height: 80px;
+}
+
+.text_secondary {
+  color: var(--text-inactive-color);
+}

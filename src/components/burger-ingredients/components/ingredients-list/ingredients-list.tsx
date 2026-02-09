@@ -22,7 +22,7 @@ export const IngredientsList = ({
         {ingredients.map((ingredient) => (
           <li key={ingredient._id}>
             <IngredientCard
-              onClick={() => onAddIngredient(ingredient)}
+              onDblClick={() => onAddIngredient(ingredient)}
               ingredient={ingredient}
             />
           </li>
