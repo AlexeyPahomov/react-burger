@@ -1,10 +1,12 @@
+import { Modal } from '@/components/modal/modal';
+import { useModal } from '@/hooks/useModal';
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { OrderDetails } from './components/order-details/order-details';
 
@@ -28,17 +30,15 @@ export const BurgerConstructor = ({
     [ingredients]
   );
 
-  const [isOpenOrder, setIsOpenOrder] = useState(false);
-  const openOrder = (): void => {
-    setIsOpenOrder(true);
-  };
-  const closeOrder = (): void => {
-    setIsOpenOrder(false);
-  };
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
-      <OrderDetails isOpen={isOpenOrder} onClose={closeOrder} />
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <OrderDetails />
+        </Modal>
+      )}
       <div className={`${styles.column}`}>
         {bun === undefined ? null : (
           <ConstructorElement
@@ -82,7 +82,7 @@ export const BurgerConstructor = ({
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" className={styles.price_icon} />
         </div>
-        <Button onClick={openOrder} size="large" type="primary" htmlType="button">
+        <Button onClick={openModal} size="large" type="primary" htmlType="button">
           Оформить заказ
         </Button>
       </footer>

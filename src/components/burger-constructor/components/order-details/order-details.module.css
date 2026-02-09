@@ -1,3 +1,10 @@
+.order_details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .icon_check {
   width: 80px;
   height: 80px;

@@ -1,4 +1,3 @@
-import { Modal } from '@/components/modal/modal';
 import { useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,14 +7,10 @@ import styles from './ingredient-details.module.css';
 
 type TIngredientDetails = {
   ingredient?: TIngredientWithCounter;
-  isOpen: boolean;
-  onClose: () => void;
 };
 
 export const IngredientDetails = ({
   ingredient,
-  isOpen,
-  onClose,
 }: TIngredientDetails): React.JSX.Element => {
   const details = useMemo(
     () => [
@@ -44,7 +39,7 @@ export const IngredientDetails = ({
   );
 
   return (
-    <Modal title="Детали ингредиента" isOpen={isOpen} onClose={onClose}>
+    <div className={`${styles.details_wrapper}`}>
       <img
         src={ingredient?.image}
         alt={ingredient?.name}
@@ -59,6 +54,6 @@ export const IngredientDetails = ({
           </div>
         ))}
       </div>
-    </Modal>
+    </div>
   );
 };

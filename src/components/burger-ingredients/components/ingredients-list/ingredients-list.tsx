@@ -7,12 +7,14 @@ import styles from './ingredients-list.module.css';
 type TIngredientCardListsProps = {
   title: string;
   ingredients: TIngredientWithCounter[];
+  onClickIngredient: (ingredient: TIngredientWithCounter) => void;
   onAddIngredient: (ingredient: TIngredientWithCounter) => void;
 };
 
 export const IngredientsList = ({
   ingredients,
   title,
+  onClickIngredient,
   onAddIngredient,
 }: TIngredientCardListsProps): React.JSX.Element => {
   return (
@@ -22,6 +24,7 @@ export const IngredientsList = ({
         {ingredients.map((ingredient) => (
           <li key={ingredient._id}>
             <IngredientCard
+              onClick={() => onClickIngredient(ingredient)}
               onDblClick={() => onAddIngredient(ingredient)}
               ingredient={ingredient}
             />

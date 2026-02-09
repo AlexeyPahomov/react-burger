@@ -17,14 +17,14 @@ export const ModalOverlay = ({
     }
   };
 
-  const handleEscPress = (event: KeyboardEvent): void => {
-    if (event.key === 'Escape' && onClick) {
-      onClick();
-    }
-  };
-
   useEffect(() => {
+    const handleEscPress = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape' && onClick) {
+        onClick();
+      }
+    };
     document.addEventListener('keydown', handleEscPress);
+
     return (): void => {
       document.removeEventListener('keydown', handleEscPress);
     };

@@ -1,19 +1,13 @@
-import { Modal } from '@/components/modal/modal';
 import { useOrderData } from '@/hooks/useOrderData';
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import styles from './order-details.module.css';
 
-type TBurgerOrder = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-export const OrderDetails = ({ isOpen, onClose }: TBurgerOrder): React.JSX.Element => {
+export const OrderDetails = (): React.JSX.Element => {
   const { data } = useOrderData();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <div className={styles.order_details}>
       <span className="text text_type_digits-large mt-4 mb-8">{data.id}</span>
       <span className="text text_type_main-medium mb-15">идентификатор заказа</span>
       <CheckMarkIcon type="primary" className={styles.icon_check} />
@@ -23,6 +17,6 @@ export const OrderDetails = ({ isOpen, onClose }: TBurgerOrder): React.JSX.Eleme
       <span className={`mb-15 text text_type_main-default ${styles.text_secondary}`}>
         Дождитесь готовности на орбитальной станции
       </span>
-    </Modal>
+    </div>
   );
 };

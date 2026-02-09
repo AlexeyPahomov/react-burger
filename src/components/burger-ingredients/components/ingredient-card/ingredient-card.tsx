@@ -1,8 +1,5 @@
 import { useDoubleClick } from '@/hooks/useDoubleClick';
 import { CurrencyIcon, Counter } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
-
-import { IngredientDetails } from '..';
 
 import type { TIngredientWithCounter } from '@utils/types';
 
@@ -10,35 +7,24 @@ import styles from './ingredient-card.module.css';
 
 type IngredientCardProps = {
   ingredient: TIngredientWithCounter;
+  onClick: () => void;
   onDblClick: () => void;
 };
 
 export const IngredientCard = ({
   ingredient,
+  onClick,
   onDblClick,
 }: IngredientCardProps): React.JSX.Element => {
   const { image, name, price, count } = ingredient;
 
-  const [isOpenDetails, setIsOpenDetails] = useState(false);
-  const openIngredientDetails = (): void => {
-    setIsOpenDetails(true);
-  };
-  const closeIngredientDetails = (): void => {
-    setIsOpenDetails(false);
-  };
-
   const handleClick = useDoubleClick(
-    () => openIngredientDetails(),
+    () => onClick(),
     () => onDblClick()
   );
 
   return (
     <>
-      <IngredientDetails
-        ingredient={ingredient}
-        isOpen={isOpenDetails}
-        onClose={closeIngredientDetails}
-      />
       <div onClick={handleClick} className={styles.ingredient_card}>
         <div className={styles.ingredient_counter}>
           {count > 0 && <Counter count={count} />}

@@ -1,7 +1,10 @@
+import { Modal } from '@/components/modal/modal';
+import { useModal } from '@/hooks/useModal';
 import { ingredientTypeValues } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
+import { useState } from 'react';
 
-import { IngredientsList } from './components';
+import { IngredientsList, IngredientDetails } from './components';
 
 import type { TIngredientType, TIngredientWithCounter } from '@utils/types';
 
@@ -18,6 +21,15 @@ export const BurgerIngredients = ({
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const filtredIngredients = (key: TIngredientType): TIngredientWithCounter[] =>
     ingredients.filter(({ type }) => type === key);
+
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const [currentIngredient, setCurrentIngredient] = useState<
+    TIngredientWithCounter | undefined
+  >(undefined);
+  const toggleIngredientDetails = (ingredient?: TIngredientWithCounter): void => {
+    setCurrentIngredient(ingredient);
+    ingredient === undefined ? closeModal() : openModal();
+  };
 
   return (
     <section className={styles.burger_ingredients}>
@@ -56,6 +68,7 @@ export const BurgerIngredients = ({
         {ingredientTypeValues.map(({ id, title, type }) => (
           <li key={id}>
             <IngredientsList
+              onClickIngredient={toggleIngredientDetails}
               onAddIngredient={onAddIngredient}
               title={title}
               ingredients={filtredIngredients(type)}
@@ -63,6 +76,11 @@ export const BurgerIngredients = ({
           </li>
         ))}
       </ul>
+      {isModalOpen && (
+        <Modal title="Детали ингредиента" onClose={() => toggleIngredientDetails()}>
+          <IngredientDetails ingredient={currentIngredient} />
+        </Modal>
+      )}
     </section>
   );
 };
