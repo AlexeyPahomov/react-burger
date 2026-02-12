@@ -1,4 +1,5 @@
 import { Modal } from '@/components/modal/modal';
+import { useCategoryScroll } from '@/hooks/useCategoryScroll';
 import { useModal } from '@/hooks/useModal';
 import { ingredientTypeValues } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
@@ -23,6 +24,8 @@ export const BurgerIngredients = ({
     ingredients.filter(({ type }) => type === key);
 
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { activeTab, scrollToCategory, setRef, listContainerRef } = useCategoryScroll();
+
   const [currentIngredient, setCurrentIngredient] = useState<
     TIngredientWithCounter | undefined
   >(undefined);
@@ -35,43 +38,27 @@ export const BurgerIngredients = ({
     <section className={styles.burger_ingredients}>
       <nav>
         <ul className={styles.menu}>
-          <Tab
-            value="bun"
-            active={true}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Булки
-          </Tab>
-          <Tab
-            value="sauce"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Соусы
-          </Tab>
-          <Tab
-            value="main"
-            active={false}
-            onClick={() => {
-              /* TODO */
-            }}
-          >
-            Начинки
-          </Tab>
+          {ingredientTypeValues.map(({ id, type, title }) => (
+            <Tab
+              key={id}
+              value={type}
+              active={activeTab === type}
+              onClick={() => scrollToCategory(type)}
+            >
+              {title}
+            </Tab>
+          ))}
         </ul>
       </nav>
-      <ul className={`custom-scroll ${styles.ingredients_list}`}>
-        {ingredientTypeValues.map(({ id, title, type }) => (
+      <ul ref={listContainerRef} className={`custom-scroll ${styles.ingredients_list}`}>
+        {ingredientTypeValues.map(({ id, title, type }, indx) => (
           <li key={id}>
             <IngredientsList
               onClickIngredient={toggleIngredientDetails}
               onAddIngredient={onAddIngredient}
               title={title}
               ingredients={filtredIngredients(type)}
+              ref={(el) => setRef(el, indx)}
             />
           </li>
         ))}
