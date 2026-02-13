@@ -24,6 +24,13 @@ export type TBurgerIngredient = TIngredient & {
 export type TIngredientType = 'bun' | 'sauce' | 'main';
 
 export type TOrder = {
-  id: string;
-  status: string;
+  ingredients: string[];
+};
+
+export type TCreateOrderResponse = {
+  name: string;
+  order: {
+    number: number;
+  };
+  success: boolean;
 };

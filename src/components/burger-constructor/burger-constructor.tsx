@@ -1,5 +1,5 @@
 import { Modal } from '@/components/modal/modal';
-import { useModal } from '@/hooks/useModal';
+import { useOrderModal } from '@/hooks/useOrderModal';
 import {
   ConstructorElement,
   DragIcon,
@@ -14,29 +14,25 @@ import type { TBurgerIngredient } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
-type TBurgerConstructorProps = {
-  ingredients: TBurgerIngredient[];
-  onRemoveIngredient: (id: TBurgerIngredient['id']) => void;
-};
+export const BurgerConstructor = (): React.JSX.Element => {
+  const { createOrder, orderNumber, isModalOpen, closeModal } = useOrderModal();
 
-export const BurgerConstructor = ({
-  ingredients,
-  onRemoveIngredient,
-}: TBurgerConstructorProps): React.JSX.Element => {
+  // TODO
+  const ingredients: TBurgerIngredient[] = [];
   const totalPrice = ingredients.reduce((sum, item) => sum + item.price, 0);
-
   const bun = useMemo(
     () => ingredients.find(({ type }) => type === 'bun'),
     [ingredients]
   );
-
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const onRemoveIngredient = (id: string): void => {
+    console.log(id);
+  };
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <OrderDetails />
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
       <div className={`${styles.column}`}>
@@ -82,7 +78,7 @@ export const BurgerConstructor = ({
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" className={styles.price_icon} />
         </div>
-        <Button onClick={openModal} size="large" type="primary" htmlType="button">
+        <Button onClick={createOrder} size="large" type="primary" htmlType="button">
           Оформить заказ
         </Button>
       </footer>
