@@ -1,34 +1,21 @@
 import { Modal } from '@/components/modal/modal';
 import { useCategoryScroll } from '@/hooks/useCategoryScroll';
 import { useIngredientDetailsModal } from '@/hooks/useIngredientDetailsModal';
-import { useGetIngredientsQuery } from '@/services/ingredients/api';
+import { useIngredients } from '@/hooks/useIngredients';
 import { ingredientTypeValues } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback } from 'react';
 
 import { IngredientsList, IngredientDetails } from './components';
-
-import type { TIngredientType, TIngredientWithCounter } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
-  const { data: ingredients } = useGetIngredientsQuery();
-  const filtredIngredients = useCallback(
-    (key: TIngredientType): TIngredientWithCounter[] =>
-      ingredients !== undefined ? ingredients.filter(({ type }) => type === key) : [],
-    [ingredients]
-  );
-
   const { activeTab, scrollToCategory, setRef, listContainerRef } = useCategoryScroll();
+
+  const { ingredients, onAddIngredient } = useIngredients();
 
   const { isModalOpen, currentIngredient, toggleIngredientDetails } =
     useIngredientDetailsModal();
-
-  const onAddIngredient = (i: TIngredientWithCounter): void => {
-    // TODO
-    console.log(i);
-  };
 
   return (
     <section className={styles.burger_ingredients}>
@@ -53,7 +40,7 @@ export const BurgerIngredients = (): React.JSX.Element => {
               onClickIngredient={toggleIngredientDetails}
               onAddIngredient={onAddIngredient}
               title={title}
-              ingredients={filtredIngredients(type)}
+              ingredients={ingredients(type)}
               ref={(el) => setRef(el, indx)}
             />
           </li>

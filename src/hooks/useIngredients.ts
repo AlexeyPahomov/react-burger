@@ -1,38 +1,25 @@
-import { ingredientsApi } from '@/utils/constants';
-import { useEffect, useState } from 'react';
+import { useGetIngredientsQuery } from '@/services/ingredients/api';
+import { useCallback } from 'react';
 
-import type { TIngredient, TIngredientWithCounter } from '../utils/types';
+import type { TIngredientType, TIngredientWithCounter } from '@/utils/types';
 
-type UseIngredientsResult = {
-  isLoading: boolean;
-  ingredients: TIngredientWithCounter[];
-  setIngredients: React.Dispatch<React.SetStateAction<TIngredientWithCounter[]>>;
+type TUseIngredientsResult = {
+  ingredients: (key: TIngredientType) => TIngredientWithCounter[];
+  onAddIngredient: (i: TIngredientWithCounter) => void;
 };
 
-export function useIngredients(): UseIngredientsResult {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [ingredients, setIngredients] = useState<TIngredientWithCounter[]>([]);
+export function useIngredients(): TUseIngredientsResult {
+  const { data: ingredients } = useGetIngredientsQuery();
+  const filtredIngredients = useCallback(
+    (key: TIngredientType): TIngredientWithCounter[] =>
+      ingredients !== undefined ? ingredients.filter(({ type }) => type === key) : [],
+    [ingredients]
+  );
 
-  useEffect(() => {
-    setIsLoading(true);
+  const onAddIngredient = (i: TIngredientWithCounter): void => {
+    // TODO
+    console.log(i);
+  };
 
-    fetch(ingredientsApi)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Статус ответа: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(({ data }: { data: TIngredient[] }) => {
-        setIngredients(data.map((ingredient) => ({ ...ingredient, count: 0 })));
-      })
-      .catch((e) => {
-        console.error('Ошибка загрузки данных:', e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
-  return { ingredients, setIngredients, isLoading };
+  return { ingredients: filtredIngredients, onAddIngredient };
 }
