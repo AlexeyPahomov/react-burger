@@ -4,6 +4,8 @@ import { useCreateOrderMutation } from '@/services/orders/api';
 import { setOrderNumber, clearOrder } from '@/services/orders/orderSlice';
 import { selectOrder } from '@/services/selectors';
 
+import { useBurger } from './useBurger';
+
 type TUseOrderResult = {
   isModalOpen: boolean;
   orderNumber: number | null;
@@ -18,15 +20,29 @@ export function useOrderModal(): TUseOrderResult {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const handleCreateOrder = (): void => {
-    // TODO
-    const ingredients = [
-      '692889f16bf770001bfeb4cc',
-      '692889f16bf770001bfeb4d7',
-      '692889f16bf770001bfeb4cc',
-    ];
+  const { ingredients } = useBurger();
 
-    createOrder({ ingredients })
+  const getIngredientsToOrder = (): string[] | null => {
+    if (!ingredients.length) {
+      console.error('Нет ингридиентов');
+      return null;
+    }
+    if (ingredients[0].type !== 'bun') {
+      console.error('Не выбрана булка');
+      return null;
+    }
+
+    const ingredientsToOrder = ingredients.map(({ _id }) => _id);
+    ingredientsToOrder.push(ingredientsToOrder[0]);
+
+    return ingredientsToOrder;
+  };
+
+  const handleCreateOrder = (): void => {
+    const ingredientsToOrder = getIngredientsToOrder();
+    if (!ingredientsToOrder) return;
+
+    createOrder({ ingredients: ingredientsToOrder })
       .then((response) => {
         if (!response.data) {
           throw new Error('Ошибка запроса');

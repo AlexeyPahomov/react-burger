@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import burgerReducer from './burger/burgerSlice';
 import { ingredientsApi } from './ingredients/api';
 import ingredientDetailsReducer from './ingredients/ingredientDetailsSlice';
 import { ordersApi } from './orders/api';
@@ -9,6 +10,7 @@ export const store = configureStore({
   reducer: {
     [ingredientsApi.reducerPath]: ingredientsApi.reducer,
     ingredientsDetails: ingredientDetailsReducer,
+    burger: burgerReducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
     order: orderReducer,
   },

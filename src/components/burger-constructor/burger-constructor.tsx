@@ -1,4 +1,5 @@
 import { Modal } from '@/components/modal/modal';
+import { useBurger } from '@/hooks/useBurger';
 import { useOrderModal } from '@/hooks/useOrderModal';
 import {
   ConstructorElement,
@@ -10,23 +11,17 @@ import { useMemo } from 'react';
 
 import { OrderDetails } from './components/order-details/order-details';
 
-import type { TBurgerIngredient } from '@utils/types';
-
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = (): React.JSX.Element => {
   const { createOrder, orderNumber, isModalOpen, closeModal } = useOrderModal();
 
-  // TODO
-  const ingredients: TBurgerIngredient[] = [];
+  const { ingredients, removeIngredient } = useBurger();
   const totalPrice = ingredients.reduce((sum, item) => sum + item.price, 0);
   const bun = useMemo(
     () => ingredients.find(({ type }) => type === 'bun'),
     [ingredients]
   );
-  const onRemoveIngredient = (id: string): void => {
-    console.log(id);
-  };
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
@@ -53,7 +48,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
               <li key={ingredient.id}>
                 <DragIcon type="primary" className="mr-2" />
                 <ConstructorElement
-                  handleClose={() => onRemoveIngredient(ingredient.id)}
+                  handleClose={() => removeIngredient(ingredient.id)}
                   text={ingredient.name}
                   thumbnail={ingredient.image}
                   price={ingredient.price}

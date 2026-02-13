@@ -1,11 +1,17 @@
 import { useGetIngredientsQuery } from '@/services/ingredients/api';
 import { useCallback } from 'react';
 
-import type { TIngredientType, TIngredientWithCounter } from '@/utils/types';
+import { useBurger } from './useBurger';
+
+import type {
+  TIngredientType,
+  TIngredientWithCounter,
+  TIngredient,
+} from '@/utils/types';
 
 type TUseIngredientsResult = {
   ingredients: (key: TIngredientType) => TIngredientWithCounter[];
-  onAddIngredient: (i: TIngredientWithCounter) => void;
+  onAddIngredient: (i: TIngredient) => void;
 };
 
 export function useIngredients(): TUseIngredientsResult {
@@ -16,10 +22,7 @@ export function useIngredients(): TUseIngredientsResult {
     [ingredients]
   );
 
-  const onAddIngredient = (i: TIngredientWithCounter): void => {
-    // TODO
-    console.log(i);
-  };
+  const { addIngredient } = useBurger();
 
-  return { ingredients: filtredIngredients, onAddIngredient };
+  return { ingredients: filtredIngredients, onAddIngredient: addIngredient };
 }
