@@ -1,10 +1,10 @@
 import { Modal } from '@/components/modal/modal';
 import { useCategoryScroll } from '@/hooks/useCategoryScroll';
-import { useModal } from '@/hooks/useModal';
+import { useIngredientDetailsModal } from '@/hooks/useIngredientDetailsModal';
 import { useGetIngredientsQuery } from '@/services/ingredients/api';
 import { ingredientTypeValues } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { IngredientsList, IngredientDetails } from './components';
 
@@ -14,27 +14,20 @@ import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
   const { data: ingredients } = useGetIngredientsQuery();
-
   const filtredIngredients = useCallback(
     (key: TIngredientType): TIngredientWithCounter[] =>
       ingredients !== undefined ? ingredients.filter(({ type }) => type === key) : [],
     [ingredients]
   );
 
+  const { activeTab, scrollToCategory, setRef, listContainerRef } = useCategoryScroll();
+
+  const { isModalOpen, currentIngredient, toggleIngredientDetails } =
+    useIngredientDetailsModal();
+
   const onAddIngredient = (i: TIngredientWithCounter): void => {
     // TODO
     console.log(i);
-  };
-
-  const { isModalOpen, openModal, closeModal } = useModal();
-  const { activeTab, scrollToCategory, setRef, listContainerRef } = useCategoryScroll();
-
-  const [currentIngredient, setCurrentIngredient] = useState<
-    TIngredientWithCounter | undefined
-  >(undefined);
-  const toggleIngredientDetails = (ingredient?: TIngredientWithCounter): void => {
-    setCurrentIngredient(ingredient);
-    ingredient === undefined ? closeModal() : openModal();
   };
 
   return (

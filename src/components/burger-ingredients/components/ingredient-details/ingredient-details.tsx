@@ -6,7 +6,7 @@ import type { TIngredientWithCounter } from '@/utils/types';
 import styles from './ingredient-details.module.css';
 
 type TIngredientDetails = {
-  ingredient?: TIngredientWithCounter;
+  ingredient: TIngredientWithCounter | null;
 };
 
 export const IngredientDetails = ({

@@ -9,7 +9,7 @@ import styles from './ingredients-list.module.css';
 type TIngredientCardListsProps = {
   title: string;
   ingredients: TIngredientWithCounter[];
-  onClickIngredient: (ingredient: TIngredientWithCounter) => void;
+  onClickIngredient: (ingredient: TIngredientWithCounter | null) => void;
   onAddIngredient: (ingredient: TIngredientWithCounter) => void;
 };
 

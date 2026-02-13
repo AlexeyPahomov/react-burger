@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-// import burgerReducer from './burgerSlice';
 import { ingredientsApi } from './ingredients/api';
+import ingredientDetailsReducer from './ingredients/ingredientDetailsSlice';
 
 export const store = configureStore({
   reducer: {
     [ingredientsApi.reducerPath]: ingredientsApi.reducer,
-    // burger: burgerReducer,
+    ingredientsDetails: ingredientDetailsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(ingredientsApi.middleware),
