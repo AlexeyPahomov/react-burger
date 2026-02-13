@@ -1,5 +1,8 @@
+import { useAppSelector, useAppDispatch } from '@/services/hooks';
 import { useGetIngredientsQuery } from '@/services/ingredients/api';
-import { useCallback } from 'react';
+import { setIngredients } from '@/services/ingredients/ingredientsSlice';
+import { selectIngredients } from '@/services/selectors';
+import { useCallback, useEffect } from 'react';
 
 import { useBurger } from './useBurger';
 
@@ -15,7 +18,15 @@ type TUseIngredientsResult = {
 };
 
 export function useIngredients(): TUseIngredientsResult {
-  const { data: ingredients } = useGetIngredientsQuery();
+  const dispatch = useAppDispatch();
+  const { data } = useGetIngredientsQuery();
+  useEffect(() => {
+    if (data !== undefined) {
+      dispatch(setIngredients(data));
+    }
+  }, []);
+
+  const ingredients = useAppSelector(selectIngredients);
   const filtredIngredients = useCallback(
     (key: TIngredientType): TIngredientWithCounter[] =>
       ingredients !== undefined ? ingredients.filter(({ type }) => type === key) : [],

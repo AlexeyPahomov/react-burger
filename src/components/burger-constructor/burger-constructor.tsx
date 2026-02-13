@@ -48,7 +48,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
               <li key={ingredient.id}>
                 <DragIcon type="primary" className="mr-2" />
                 <ConstructorElement
-                  handleClose={() => removeIngredient(ingredient.id)}
+                  handleClose={() => removeIngredient(ingredient)}
                   text={ingredient.name}
                   thumbnail={ingredient.image}
                   price={ingredient.price}
