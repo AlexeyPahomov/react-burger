@@ -7,17 +7,22 @@ type TIngredientsState = {
   ingredients: TIngredientWithCounter[];
 };
 
+type TIngredientActionPayload = {
+  id: string;
+  value?: number;
+};
+
 const initialState: TIngredientsState = {
   ingredients: [],
 };
 
 const updateIngredientCount = (
   state: WritableDraft<TIngredientsState>,
-  id: string,
-  value: number
+  payload: TIngredientActionPayload
 ): void => {
+  const { id, value } = payload;
   const ingredient = state.ingredients.find(({ _id }) => _id === id);
-  if (ingredient) {
+  if (ingredient && value) {
     ingredient.count += value;
   }
 };
@@ -29,11 +34,19 @@ const ingredientsSlice = createSlice({
     setIngredients: (state, action: PayloadAction<TIngredientWithCounter[]>) => {
       state.ingredients = action.payload;
     },
-    increaseIngredientCount: (state, action: PayloadAction<string>) => {
-      updateIngredientCount(state, action.payload, 1);
+    increaseIngredientCount: (
+      state,
+      action: PayloadAction<TIngredientActionPayload>
+    ) => {
+      const { id, value } = action.payload;
+      updateIngredientCount(state, { id, value: value ?? 1 });
     },
-    decreaseIngredientCount: (state, action: PayloadAction<string>) => {
-      updateIngredientCount(state, action.payload, -1);
+    decreaseIngredientCount: (
+      state,
+      action: PayloadAction<TIngredientActionPayload>
+    ) => {
+      const { id, value } = action.payload;
+      updateIngredientCount(state, { id, value: value ?? -1 });
     },
     clearBunsCount: (state) => {
       state.ingredients = state.ingredients.map((i) => ({

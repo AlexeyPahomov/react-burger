@@ -33,12 +33,17 @@ export function useBurger(): UseBurgerResult {
     clearBuns(ingredient._id, ingredient.type);
 
     dispatch(addIngredient(ingredient));
-    dispatch(increaseIngredientCount(ingredient._id));
+    dispatch(
+      increaseIngredientCount({
+        id: ingredient._id,
+        value: ingredient.type === 'bun' ? 2 : 1,
+      })
+    );
   };
 
   const remove = ({ id, _id }: TBurgerIngredient): void => {
     dispatch(removeIngredient(id));
-    dispatch(decreaseIngredientCount(_id));
+    dispatch(decreaseIngredientCount({ id: _id }));
   };
 
   return {
