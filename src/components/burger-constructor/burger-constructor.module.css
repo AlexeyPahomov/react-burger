@@ -39,6 +39,25 @@
   cursor: default;
 }
 
+.default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: flex-end;
+
+  span {
+    justify-content: center;
+
+    img {
+      display: none;
+    }
+
+    span:not(:first-of-type) {
+      display: none;
+    }
+  }
+}
+
 .enable {
   cursor: pointer;
 }

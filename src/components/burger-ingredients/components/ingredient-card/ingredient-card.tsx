@@ -1,5 +1,6 @@
-import { useDoubleClick } from '@/hooks/useDoubleClick';
+import { useDndRef } from '@/hooks/useDndRef';
 import { CurrencyIcon, Counter } from '@krgaa/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
 
 import type { TIngredientWithCounter } from '@utils/types';
 
@@ -8,24 +9,23 @@ import styles from './ingredient-card.module.css';
 type IngredientCardProps = {
   ingredient: TIngredientWithCounter;
   onClick: () => void;
-  onDblClick: () => void;
 };
 
 export const IngredientCard = ({
   ingredient,
   onClick,
-  onDblClick,
 }: IngredientCardProps): React.JSX.Element => {
   const { image, name, price, count } = ingredient;
 
-  const handleClick = useDoubleClick(
-    () => onClick(),
-    () => onDblClick()
-  );
+  const [, dragSource] = useDrag({
+    type: 'ingredient',
+    item: ingredient,
+  });
+  const dragRef = useDndRef(dragSource);
 
   return (
     <>
-      <div onClick={handleClick} className={styles.ingredient_card}>
+      <div onClick={onClick} className={styles.ingredient_card} ref={dragRef}>
         <div className={styles.ingredient_counter}>
           {count > 0 && <Counter count={count} />}
         </div>

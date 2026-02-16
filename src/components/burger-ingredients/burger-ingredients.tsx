@@ -12,7 +12,7 @@ import styles from './burger-ingredients.module.css';
 export const BurgerIngredients = (): React.JSX.Element => {
   const { activeTab, scrollToCategory, setRef, listContainerRef } = useCategoryScroll();
 
-  const { ingredients, onAddIngredient } = useIngredients();
+  const { ingredients } = useIngredients();
 
   const { isModalOpen, currentIngredient, toggleIngredientDetails } =
     useIngredientDetailsModal();
@@ -38,7 +38,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
           <li key={id}>
             <IngredientsList
               onClickIngredient={toggleIngredientDetails}
-              onAddIngredient={onAddIngredient}
               title={title}
               ingredients={ingredients(type)}
               ref={(el) => setRef(el, indx)}

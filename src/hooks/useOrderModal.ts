@@ -20,20 +20,22 @@ export function useOrderModal(): TUseOrderResult {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const { ingredients } = useBurger();
+  const { burger } = useBurger();
 
   const getIngredientsToOrder = (): string[] | null => {
+    const { bun, ingredients } = burger;
     if (!ingredients.length) {
       console.error('Нет ингридиентов');
       return null;
     }
-    if (ingredients[0].type !== 'bun') {
+    if (!bun) {
       console.error('Не выбрана булка');
       return null;
     }
 
     const ingredientsToOrder = ingredients.map(({ _id }) => _id);
-    ingredientsToOrder.push(ingredientsToOrder[0]);
+    ingredientsToOrder.unshift(bun._id);
+    ingredientsToOrder.push(bun._id);
 
     return ingredientsToOrder;
   };

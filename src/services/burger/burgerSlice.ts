@@ -1,13 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { TIngredient, TBurgerIngredient } from '@utils/types';
+import type { TIngredient, TBurger } from '@utils/types';
 
-type BurgerState = {
-  ingredients: TBurgerIngredient[];
-};
-
-const initialState: BurgerState = {
+const initialState: TBurger = {
+  bun: null,
   ingredients: [],
 };
 
@@ -19,8 +16,7 @@ const burgerSlice = createSlice({
       const ingredient = action.payload;
 
       if (ingredient.type === 'bun') {
-        state.ingredients = state.ingredients.filter((item) => item.type !== 'bun');
-        state.ingredients.unshift({ ...ingredient, id: uuidv4() });
+        state.bun = { ...ingredient, id: uuidv4() };
       } else {
         state.ingredients.push({ ...ingredient, id: uuidv4() });
       }
@@ -29,6 +25,7 @@ const burgerSlice = createSlice({
       state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);
     },
     clearBurger: (state) => {
+      state.bun = null;
       state.ingredients = [];
     },
   },

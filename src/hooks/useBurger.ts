@@ -7,36 +7,29 @@ import {
 } from '@/services/ingredients/ingredientsSlice';
 import { selectBurger } from '@/services/selectors';
 
-import type { TIngredient, TBurgerIngredient } from '@utils/types';
+import type { TIngredient, TBurgerIngredient, TBurger } from '@utils/types';
 
 type UseBurgerResult = {
-  ingredients: TBurgerIngredient[];
+  burger: TBurger;
   addIngredient: (ingredient: TIngredient) => void;
   removeIngredient: (ingredient: TBurgerIngredient) => void;
 };
 
 export function useBurger(): UseBurgerResult {
   const dispatch = useAppDispatch();
-  const burgerIngredients = useAppSelector(selectBurger);
-
-  const clearBuns = (id: TIngredient['_id'], type: TIngredient['type']): void => {
-    let bun: TIngredient | undefined = undefined;
-    if (type === 'bun') {
-      bun = burgerIngredients.find(({ type }) => type === 'bun');
-      if (bun !== undefined && bun._id !== id) {
-        dispatch(clearBunsCount());
-      }
-    }
-  };
+  const burger = useAppSelector(selectBurger);
 
   const add = (ingredient: TIngredient): void => {
-    clearBuns(ingredient._id, ingredient.type);
+    const isBun = ingredient.type === 'bun';
+    if (isBun) {
+      dispatch(clearBunsCount());
+    }
 
     dispatch(addIngredient(ingredient));
     dispatch(
       increaseIngredientCount({
         id: ingredient._id,
-        value: ingredient.type === 'bun' ? 2 : 1,
+        value: isBun ? 2 : 1,
       })
     );
   };
@@ -47,7 +40,7 @@ export function useBurger(): UseBurgerResult {
   };
 
   return {
-    ingredients: burgerIngredients,
+    burger,
     addIngredient: add,
     removeIngredient: remove,
   };
