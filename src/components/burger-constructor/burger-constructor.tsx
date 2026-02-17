@@ -6,10 +6,12 @@ import {
   ConstructorElement,
   CurrencyIcon,
   Button,
+  Preloader,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 
+import { ModalOverlay } from '../modal/components/modal-overlay/modal-overlay';
 import { OrderDetails, DraggableElement } from './components';
 
 import type { TBurgerIngredient, TIngredient } from '@/utils/types';
@@ -17,7 +19,8 @@ import type { TBurgerIngredient, TIngredient } from '@/utils/types';
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = (): React.JSX.Element => {
-  const { createOrder, orderNumber, isModalOpen, closeModal } = useOrderModal();
+  const { createOrder, orderNumber, isModalOpen, closeModal, isLoading } =
+    useOrderModal();
 
   const { burger, addIngredient, removeIngredient, setIngredientPosition } = useBurger();
   const { bun, ingredients } = burger;
@@ -52,6 +55,11 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
+      {isLoading && (
+        <ModalOverlay>
+          <Preloader />
+        </ModalOverlay>
+      )}
       {isModalOpen && (
         <Modal onClose={closeModal}>
           <OrderDetails orderNumber={orderNumber} />

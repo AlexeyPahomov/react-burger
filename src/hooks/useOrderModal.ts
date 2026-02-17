@@ -8,6 +8,7 @@ import { useBurger } from './useBurger';
 
 type TUseOrderResult = {
   isModalOpen: boolean;
+  isLoading: boolean;
   orderNumber: number | null;
   createOrder: () => void;
   closeModal: () => void;
@@ -15,7 +16,7 @@ type TUseOrderResult = {
 
 export function useOrderModal(): TUseOrderResult {
   const dispatch = useAppDispatch();
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
   const orderNumber = useAppSelector(selectOrder);
 
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -66,6 +67,7 @@ export function useOrderModal(): TUseOrderResult {
   return {
     orderNumber,
     isModalOpen,
+    isLoading,
     createOrder: handleCreateOrder,
     closeModal: handleClearOrder,
   };
