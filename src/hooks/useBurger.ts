@@ -2,6 +2,7 @@ import {
   addIngredient,
   removeIngredient,
   setIngredientPosition,
+  clearBurger,
 } from '@/services/burger/burgerSlice';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import {
@@ -18,6 +19,7 @@ type UseBurgerResult = {
   addIngredient: (ingredient: TIngredient) => void;
   removeIngredient: (ingredient: TBurgerIngredient) => void;
   setIngredientPosition: (ingredient: TBurgerIngredient, position: number) => void;
+  clearBurger: () => void;
 };
 
 export function useBurger(): UseBurgerResult {
@@ -48,10 +50,15 @@ export function useBurger(): UseBurgerResult {
     dispatch(setIngredientPosition({ ingredient, position }));
   };
 
+  const clear = (): void => {
+    dispatch(clearBurger());
+  };
+
   return {
     burger,
     addIngredient: add,
     removeIngredient: remove,
     setIngredientPosition: move,
+    clearBurger: clear,
   };
 }

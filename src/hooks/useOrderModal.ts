@@ -20,7 +20,7 @@ export function useOrderModal(): TUseOrderResult {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const { burger } = useBurger();
+  const { burger, clearBurger } = useBurger();
 
   const getIngredientsToOrder = (): string[] | null => {
     const { bun, ingredients } = burger;
@@ -59,6 +59,7 @@ export function useOrderModal(): TUseOrderResult {
 
   const handleClearOrder = (): void => {
     dispatch(clearOrder());
+    dispatch(clearBurger);
     closeModal();
   };
 
