@@ -100,7 +100,13 @@ export const BurgerConstructor = (): React.JSX.Element => {
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" className={styles.price_icon} />
         </div>
-        <Button onClick={createOrder} size="large" type="primary" htmlType="button">
+        <Button
+          onClick={createOrder}
+          size="large"
+          type="primary"
+          htmlType="button"
+          disabled={!bun}
+        >
           Оформить заказ
         </Button>
       </footer>
