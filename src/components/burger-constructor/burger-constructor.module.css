@@ -16,13 +16,6 @@
     overflow-y: auto;
     scrollbar-gutter: stable;
     list-style-type: none;
-
-    li {
-      display: flex;
-      justify-content: end;
-      align-items: center;
-      width: 100%;
-    }
   }
 
   footer {
@@ -56,10 +49,6 @@
       display: none;
     }
   }
-}
-
-.enable {
-  cursor: pointer;
 }
 
 .column {

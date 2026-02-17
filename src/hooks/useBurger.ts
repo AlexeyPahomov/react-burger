@@ -1,4 +1,8 @@
-import { addIngredient, removeIngredient } from '@/services/burger/burgerSlice';
+import {
+  addIngredient,
+  removeIngredient,
+  setIngredientPosition,
+} from '@/services/burger/burgerSlice';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import {
   increaseIngredientCount,
@@ -13,6 +17,7 @@ type UseBurgerResult = {
   burger: TBurger;
   addIngredient: (ingredient: TIngredient) => void;
   removeIngredient: (ingredient: TBurgerIngredient) => void;
+  setIngredientPosition: (ingredient: TBurgerIngredient, position: number) => void;
 };
 
 export function useBurger(): UseBurgerResult {
@@ -39,9 +44,14 @@ export function useBurger(): UseBurgerResult {
     dispatch(decreaseIngredientCount({ id: _id }));
   };
 
+  const move = (ingredient: TBurgerIngredient, position: number): void => {
+    dispatch(setIngredientPosition({ ingredient, position }));
+  };
+
   return {
     burger,
     addIngredient: add,
     removeIngredient: remove,
+    setIngredientPosition: move,
   };
 }

@@ -4,23 +4,22 @@ import { useDndRef } from '@/hooks/useDndRef';
 import { useOrderModal } from '@/hooks/useOrderModal';
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 
-import { OrderDetails } from './components/order-details/order-details';
+import { OrderDetails, DraggableElement } from './components';
 
-import type { TIngredient } from '@/utils/types';
+import type { TBurgerIngredient, TIngredient } from '@/utils/types';
 
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = (): React.JSX.Element => {
   const { createOrder, orderNumber, isModalOpen, closeModal } = useOrderModal();
 
-  const { burger, addIngredient, removeIngredient } = useBurger();
+  const { burger, addIngredient, removeIngredient, setIngredientPosition } = useBurger();
   const { bun, ingredients } = burger;
 
   const defaultText = {
@@ -38,11 +37,18 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
-    drop(ingredient: TIngredient) {
+    drop(ingredient: TIngredient, monitor) {
+      if (monitor.didDrop()) {
+        return;
+      }
       addIngredient(ingredient);
     },
   });
   const dropRef = useDndRef(dropTarget);
+
+  const dropIngredient = (ingredient: TBurgerIngredient, index: number): void => {
+    setIngredientPosition(ingredient, index);
+  };
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
@@ -69,15 +75,12 @@ export const BurgerConstructor = (): React.JSX.Element => {
           />
         ) : (
           <ul className="custom-scroll">
-            {ingredients.map((ingredient) => (
+            {ingredients.map((ingredient, index) => (
               <li key={ingredient.id}>
-                <DragIcon type="primary" className="mr-2" />
-                <ConstructorElement
+                <DraggableElement
                   handleClose={() => removeIngredient(ingredient)}
-                  text={ingredient.name}
-                  thumbnail={ingredient.image}
-                  price={ingredient.price}
-                  extraClass={`${styles.enable}`}
+                  handleDrop={(item) => dropIngredient(item, index)}
+                  ingredient={ingredient}
                 />
               </li>
             ))}
