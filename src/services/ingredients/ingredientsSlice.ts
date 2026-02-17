@@ -54,6 +54,9 @@ const ingredientsSlice = createSlice({
         count: i.type === 'bun' ? 0 : i.count,
       }));
     },
+    clearIngredientsCount: (state) => {
+      state.ingredients.forEach((i) => (i.count = 0));
+    },
   },
 });
 
@@ -62,5 +65,6 @@ export const {
   increaseIngredientCount,
   decreaseIngredientCount,
   clearBunsCount,
+  clearIngredientsCount,
 } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;

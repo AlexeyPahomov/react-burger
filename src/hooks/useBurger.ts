@@ -9,6 +9,7 @@ import {
   increaseIngredientCount,
   decreaseIngredientCount,
   clearBunsCount,
+  clearIngredientsCount,
 } from '@/services/ingredients/ingredientsSlice';
 import { selectBurger } from '@/services/selectors';
 
@@ -52,6 +53,7 @@ export function useBurger(): UseBurgerResult {
 
   const clear = (): void => {
     dispatch(clearBurger());
+    dispatch(clearIngredientsCount());
   };
 
   return {
