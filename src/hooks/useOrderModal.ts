@@ -25,14 +25,7 @@ export function useOrderModal(): TUseOrderResult {
 
   const getIngredientsToOrder = (): string[] | null => {
     const { bun, ingredients } = burger;
-    if (!ingredients.length) {
-      console.error('Нет ингридиентов');
-      return null;
-    }
-    if (!bun) {
-      console.error('Не выбрана булка');
-      return null;
-    }
+    if (!bun) return null;
 
     const ingredientsToOrder = ingredients.map(({ _id }) => _id);
     ingredientsToOrder.unshift(bun._id);
