@@ -1,67 +1,66 @@
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  addIngredient,
+  removeIngredient,
+  setIngredientPosition,
+  clearBurger,
+} from '@/services/burger/burgerSlice';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import {
+  increaseIngredientCount,
+  decreaseIngredientCount,
+  clearBunsCount,
+  clearIngredientsCount,
+} from '@/services/ingredients/ingredientsSlice';
+import { selectBurger } from '@/services/selectors';
 
-import type {
-  TIngredient,
-  TBurgerIngredient,
-  TIngredientWithCounter,
-} from '@utils/types';
+import type { TIngredient, TBurgerIngredient, TBurger } from '@utils/types';
 
 type UseBurgerResult = {
-  burger: TBurgerIngredient[];
+  burger: TBurger;
   addIngredient: (ingredient: TIngredient) => void;
-  removeIngredient: (id: TBurgerIngredient['id']) => void;
+  removeIngredient: (ingredient: TBurgerIngredient) => void;
+  setIngredientPosition: (ingredient: TBurgerIngredient, position: number) => void;
+  clearBurger: () => void;
 };
 
-export function useBurger(
-  ingredients: TIngredientWithCounter[],
-  setIngredients: React.Dispatch<React.SetStateAction<TIngredientWithCounter[]>>
-): UseBurgerResult {
-  const [burger, setBurger] = useState<TBurgerIngredient[]>([]);
+export function useBurger(): UseBurgerResult {
+  const dispatch = useAppDispatch();
+  const burger = useAppSelector(selectBurger);
 
-  const addIngredient = (ingredient: TIngredient): void => {
-    let bun: TIngredient | undefined = undefined;
-    let isSameBun = false;
-
-    if (ingredient.type === 'bun') {
-      bun = burger.find(({ type }) => type === 'bun');
-      isSameBun = bun?._id === ingredient._id;
-    }
-    setBurger([
-      ...(bun === undefined ? burger : burger.filter(({ type }) => type !== 'bun')),
-      { ...ingredient, id: uuidv4() },
-    ]);
-
-    const foundIngredient = ingredients.find(({ _id }) => _id === ingredient._id);
-    if (foundIngredient !== undefined) {
-      if (bun === undefined) {
-        foundIngredient.count += 1;
-      } else {
-        if (!isSameBun) {
-          ingredients.forEach((i) => {
-            if (i.type === 'bun') {
-              i.count = 0;
-            }
-          });
-          foundIngredient.count += 1;
-        }
-      }
+  const add = (ingredient: TIngredient): void => {
+    const isBun = ingredient.type === 'bun';
+    if (isBun) {
+      dispatch(clearBunsCount());
     }
 
-    setIngredients(ingredients);
+    dispatch(addIngredient(ingredient));
+    dispatch(
+      increaseIngredientCount({
+        id: ingredient._id,
+        value: isBun ? 2 : 1,
+      })
+    );
   };
 
-  const removeIngredient = (id: TBurgerIngredient['id']): void => {
-    const burgerIngredient = burger.find((item) => item.id === id);
-    if (burgerIngredient === undefined) return;
-
-    setBurger(burger.filter((item) => item.id !== id));
-
-    const ingredient = ingredients.find(({ _id }) => _id === burgerIngredient._id);
-    if (ingredient !== undefined) {
-      ingredient.count += -1;
-    }
+  const remove = ({ id, _id }: TBurgerIngredient): void => {
+    dispatch(removeIngredient(id));
+    dispatch(decreaseIngredientCount({ id: _id }));
   };
 
-  return { burger, addIngredient, removeIngredient };
+  const move = (ingredient: TBurgerIngredient, position: number): void => {
+    dispatch(setIngredientPosition({ ingredient, position }));
+  };
+
+  const clear = (): void => {
+    dispatch(clearBurger());
+    dispatch(clearIngredientsCount());
+  };
+
+  return {
+    burger,
+    addIngredient: add,
+    removeIngredient: remove,
+    setIngredientPosition: move,
+    clearBurger: clear,
+  };
 }

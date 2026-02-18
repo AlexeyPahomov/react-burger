@@ -1,8 +1,5 @@
 import type { TIngredientType } from '@/utils/types';
 
-export const ingredientsApi =
-  'https://new-stellarburgers.education-services.ru/api/ingredients';
-
 export const ingredientTypeValues: {
   id: number;
   type: TIngredientType;
@@ -24,3 +21,5 @@ export const ingredientTypeValues: {
     title: 'Начинки',
   },
 ];
+
+export const baseUrl = 'https://new-stellarburgers.education-services.ru/api';

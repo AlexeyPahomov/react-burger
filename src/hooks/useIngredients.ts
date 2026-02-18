@@ -1,38 +1,39 @@
-import { ingredientsApi } from '@/utils/constants';
-import { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '@/services/hooks';
+import { useGetIngredientsQuery } from '@/services/ingredients/api';
+import { setIngredients } from '@/services/ingredients/ingredientsSlice';
+import { selectIngredients } from '@/services/selectors';
+import { useCallback, useEffect } from 'react';
 
-import type { TIngredient, TIngredientWithCounter } from '../utils/types';
+import { useBurger } from './useBurger';
 
-type UseIngredientsResult = {
-  isLoading: boolean;
-  ingredients: TIngredientWithCounter[];
-  setIngredients: React.Dispatch<React.SetStateAction<TIngredientWithCounter[]>>;
+import type {
+  TIngredientType,
+  TIngredientWithCounter,
+  TIngredient,
+} from '@/utils/types';
+
+type TUseIngredientsResult = {
+  ingredients: (key: TIngredientType) => TIngredientWithCounter[];
+  onAddIngredient: (i: TIngredient) => void;
 };
 
-export function useIngredients(): UseIngredientsResult {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [ingredients, setIngredients] = useState<TIngredientWithCounter[]>([]);
-
+export function useIngredients(): TUseIngredientsResult {
+  const dispatch = useAppDispatch();
+  const { data } = useGetIngredientsQuery();
   useEffect(() => {
-    setIsLoading(true);
-
-    fetch(ingredientsApi)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Статус ответа: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(({ data }: { data: TIngredient[] }) => {
-        setIngredients(data.map((ingredient) => ({ ...ingredient, count: 0 })));
-      })
-      .catch((e) => {
-        console.error('Ошибка загрузки данных:', e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (data !== undefined) {
+      dispatch(setIngredients(data));
+    }
   }, []);
 
-  return { ingredients, setIngredients, isLoading };
+  const ingredients = useAppSelector(selectIngredients);
+  const filtredIngredients = useCallback(
+    (key: TIngredientType): TIngredientWithCounter[] =>
+      ingredients !== undefined ? ingredients.filter(({ type }) => type === key) : [],
+    [ingredients]
+  );
+
+  const { addIngredient } = useBurger();
+
+  return { ingredients: filtredIngredients, onAddIngredient: addIngredient };
 }
