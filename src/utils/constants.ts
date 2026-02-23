@@ -27,14 +27,12 @@ export const baseUrl = 'https://new-stellarburgers.education-services.ru/api';
 export const profileMenu = [
   {
     id: '1',
-    value: 'Профиль',
+    title: 'Профиль',
+    href: '/profile',
   },
   {
     id: '2',
-    value: 'История заказов',
-  },
-  {
-    id: '3',
-    value: 'Выход',
+    title: 'История заказов',
+    href: '/orders',
   },
 ];

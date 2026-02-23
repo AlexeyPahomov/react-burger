@@ -1,27 +1,28 @@
 import { profileMenu } from '@/utils/constants';
-import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import styles from './menu.module.css';
 
 export const Menu = (): React.JSX.Element => {
-  const [active, setActive] = useState(profileMenu[0].id);
+  const location = useLocation();
+  const activeLink = (path: string): string =>
+    location.pathname === path ? styles.active : '';
 
   return (
-    <nav className={`${styles.menu}`}>
-      <ul>
-        {profileMenu.map(({ id, value }) => (
-          <li
-            onClick={() => setActive(id)}
-            key={id}
-            className={`text text_type_main-medium ${active === id ? styles.active : ''}`}
-          >
-            {value}
-          </li>
+    <div className={styles.menu}>
+      <nav>
+        {profileMenu.map(({ id, title, href }) => (
+          <a href={href} key={id} className={`${styles.link} ${activeLink(href)}`}>
+            <span className="text text_type_main-medium">{title}</span>
+          </a>
         ))}
-      </ul>
+      </nav>
+      <div className={`${styles.link}`}>
+        <span className="text text_type_main-medium">Выход</span>
+      </div>
       <p className="mt-20 text text_type_main-default">
         В этом разделе вы можете изменить свои персональные данные
       </p>
-    </nav>
+    </div>
   );
 };
