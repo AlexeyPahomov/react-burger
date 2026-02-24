@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import styles from './text-link.module.css';
 
 type TextLinkProps = {
@@ -10,9 +12,9 @@ export const TextLink = ({ text, title, link }: TextLinkProps): React.JSX.Elemen
   return (
     <div className={`mb-4 text text_type_main-default ${styles.text}`}>
       {text}{' '}
-      <a href={link} className={styles.link}>
+      <Link to={link} className={styles.link}>
         {title}
-      </a>
+      </Link>
     </div>
   );
 };

@@ -1,20 +1,23 @@
 import { profileMenu } from '@/utils/constants';
-import { useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import styles from './menu.module.css';
 
 export const Menu = (): React.JSX.Element => {
-  const location = useLocation();
-  const activeLink = (path: string): string =>
-    location.pathname === path ? styles.active : '';
-
   return (
     <div className={styles.menu}>
       <nav>
-        {profileMenu.map(({ id, title, href }) => (
-          <a href={href} key={id} className={`${styles.link} ${activeLink(href)}`}>
+        {profileMenu.map(({ id, title, to }) => (
+          <NavLink
+            to={to}
+            key={id}
+            end
+            className={({ isActive }) =>
+              `${styles.link} ${isActive ? styles.active : ''}`
+            }
+          >
             <span className="text text_type_main-medium">{title}</span>
-          </a>
+          </NavLink>
         ))}
       </nav>
       <div className={`${styles.link}`}>

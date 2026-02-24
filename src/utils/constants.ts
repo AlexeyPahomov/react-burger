@@ -28,11 +28,11 @@ export const profileMenu = [
   {
     id: '1',
     title: 'Профиль',
-    href: '/profile',
+    to: '/profile',
   },
   {
     id: '2',
     title: 'История заказов',
-    href: '/profile/orders',
+    to: '/profile/orders',
   },
 ];
