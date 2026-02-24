@@ -33,6 +33,6 @@ export const profileMenu = [
   {
     id: '2',
     title: 'История заказов',
-    href: '/orders',
+    href: '/profile/orders',
   },
 ];

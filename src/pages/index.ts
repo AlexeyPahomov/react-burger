@@ -5,3 +5,5 @@ export * from './register/register-page';
 export * from './forgot-password/forgot-password-page';
 export * from './reset-password/reset-password-page';
 export * from './profile/profile-page';
+export * from './profile-order/profile-order-page';
+export * from './user/user-page';

@@ -1,9 +1,9 @@
 import { EmailInput } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
 
-import styles from './user-data.module.css';
+import styles from './user-page.module.css';
 
-export const UserData = (): React.JSX.Element => {
+export const UserPage = (): React.JSX.Element => {
   const [name, setName] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -31,4 +31,4 @@ export const UserData = (): React.JSX.Element => {
     </div>
   );
 };
-export default UserData;
+export default UserPage;
