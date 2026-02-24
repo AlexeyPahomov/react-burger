@@ -33,7 +33,7 @@ export const AppHeader = (): React.JSX.Element => {
         </div>
         <a
           href="/login"
-          className={`${styles.link} ${styles.link_position_last} ${activeLink('/login')}`}
+          className={`${styles.link} ${styles.link_position_last} ${activeLink('/profile')}`}
         >
           <ProfileIcon type="secondary" />
           <p className="text text_type_main-default ml-2">Личный кабинет</p>
