@@ -15,6 +15,7 @@ import type {
 type TUseIngredientsResult = {
   ingredients: (key: TIngredientType) => TIngredientWithCounter[];
   onAddIngredient: (i: TIngredient) => void;
+  getIngredient: (id: string) => TIngredientWithCounter | null;
 };
 
 export function useIngredients(): TUseIngredientsResult {
@@ -35,5 +36,13 @@ export function useIngredients(): TUseIngredientsResult {
 
   const { addIngredient } = useBurger();
 
-  return { ingredients: filtredIngredients, onAddIngredient: addIngredient };
+  const getIngredient = (id: string): TIngredientWithCounter | null => {
+    return ingredients.find(({ _id }) => _id === id) ?? null;
+  };
+
+  return {
+    ingredients: filtredIngredients,
+    onAddIngredient: addIngredient,
+    getIngredient,
+  };
 }

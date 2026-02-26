@@ -1,21 +1,15 @@
-import { Modal } from '@/components/modal/modal';
 import { useCategoryScroll } from '@/hooks/useCategoryScroll';
-import { useIngredientDetailsModal } from '@/hooks/useIngredientDetailsModal';
 import { useIngredients } from '@/hooks/useIngredients';
 import { ingredientTypeValues } from '@/utils/constants';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 
-import { IngredientsList, IngredientDetails } from './components';
+import { IngredientsList } from './components';
 
 import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): React.JSX.Element => {
   const { activeTab, scrollToCategory, setRef, listContainerRef } = useCategoryScroll();
-
   const { ingredients } = useIngredients();
-
-  const { isModalOpen, currentIngredient, toggleIngredientDetails } =
-    useIngredientDetailsModal();
 
   return (
     <section className={styles.burger_ingredients}>
@@ -37,7 +31,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
         {ingredientTypeValues.map(({ id, title, type }, indx) => (
           <li key={id}>
             <IngredientsList
-              onClickIngredient={toggleIngredientDetails}
               title={title}
               ingredients={ingredients(type)}
               ref={(el) => setRef(el, indx)}
@@ -45,11 +38,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
           </li>
         ))}
       </ul>
-      {isModalOpen && (
-        <Modal title="Детали ингредиента" onClose={() => toggleIngredientDetails()}>
-          <IngredientDetails ingredient={currentIngredient} />
-        </Modal>
-      )}
     </section>
   );
 };

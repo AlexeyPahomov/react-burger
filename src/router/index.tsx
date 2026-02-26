@@ -1,4 +1,5 @@
 import App from '@/components/app/app';
+import IngredientDetailsModal from '@/components/ingredient-details-modal/ingredient-details-modal';
 import {
   HomePage,
   LoginPage,
@@ -20,25 +21,31 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <HomePage />,
+        children: [
+          {
+            path: 'ingredients/:id',
+            element: <IngredientDetailsModal />,
+          },
+        ],
       },
       {
-        path: '/login',
+        path: 'login',
         element: <LoginPage />,
       },
       {
-        path: '/register',
+        path: 'register',
         element: <RegisterPage />,
       },
       {
-        path: '/forgot-password',
+        path: 'forgot-password',
         element: <ForgotPasswordPage />,
       },
       {
-        path: '/reset-password',
+        path: 'reset-password',
         element: <ResetPasswordPage />,
       },
       {
-        path: '/profile',
+        path: 'profile',
         element: <ProfilePage />,
         children: [
           {

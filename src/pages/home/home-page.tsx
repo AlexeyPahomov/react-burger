@@ -2,6 +2,7 @@ import { useGetIngredientsQuery } from '@/services/ingredients/api';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Outlet } from 'react-router-dom';
 
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
@@ -26,6 +27,7 @@ export const HomePage = (): React.JSX.Element => {
               <BurgerConstructor />
             </main>
           </DndProvider>
+          <Outlet />
         </>
       )}
     </>
