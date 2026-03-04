@@ -1,5 +1,6 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useRegisterMutation } from '@/services/auth/api';
 import {
   Input,
   PasswordInput,
@@ -11,6 +12,16 @@ export const RegisterPage = (): React.JSX.Element => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [register] = useRegisterMutation();
+  const registerUser = (): void => {
+    register({ email, password, name })
+      .unwrap()
+      .then()
+      .catch((error) => {
+        console.error('Ошибка регистрации:', error);
+      });
+  };
 
   return (
     <PageWrapper title="Регистрация">
@@ -32,6 +43,7 @@ export const RegisterPage = (): React.JSX.Element => {
         extraClass="mb-6"
       />
       <Button
+        onClick={registerUser}
         disabled={!name || !email || !password}
         htmlType="button"
         extraClass="mb-20"

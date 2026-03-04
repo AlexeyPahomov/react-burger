@@ -1,5 +1,6 @@
+import { useGetUserQuery } from '@/services/auth/api';
 import { EmailInput } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './user-page.module.css';
 
@@ -7,6 +8,15 @@ export const UserPage = (): React.JSX.Element => {
   const [name, setName] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+
+  const { data: user } = useGetUserQuery();
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setLogin(user.email);
+      setPassword(user.password ?? '');
+    }
+  }, [user]);
 
   return (
     <div className={styles.wrapper}>

@@ -1,5 +1,7 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useFromPath } from '@/hooks/useFromPath';
+import { useLoginMutation } from '@/services/auth/api';
 import {
   Input,
   PasswordInput,
@@ -10,14 +12,27 @@ import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = (): React.JSX.Element => {
   const navigate = useNavigate();
-  const [login, setLogin] = useState('');
+  const { from } = useFromPath('/profile');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [login] = useLoginMutation();
+  const loginUser = (): void => {
+    login({ email, password })
+      .unwrap()
+      .then(() => {
+        navigate(from) as void;
+      })
+      .catch((error) => {
+        console.error('Ошибка авторизации:', error);
+      });
+  };
 
   return (
     <PageWrapper title="Вход">
       <Input
-        onChange={({ target }) => setLogin(target.value)}
-        value={login}
+        onChange={({ target }) => setEmail(target.value)}
+        value={email}
         placeholder="E-mail"
         extraClass="mb-6"
       />
@@ -28,7 +43,7 @@ export const LoginPage = (): React.JSX.Element => {
         extraClass="mb-6"
       />
       <Button
-        onClick={() => navigate('/profile') as void}
+        onClick={loginUser}
         disabled={!login || !password}
         htmlType="button"
         extraClass="mb-20"

@@ -1,9 +1,23 @@
+import { useLogoutMutation } from '@/services/auth/api';
 import { profileMenu } from '@/utils/constants';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import styles from './menu.module.css';
 
 export const Menu = (): React.JSX.Element => {
+  const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
+  const onLogout = (): void => {
+    logout()
+      .unwrap()
+      .then(() => {
+        navigate('/login') as void;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div className={styles.menu}>
       <nav>
@@ -20,7 +34,7 @@ export const Menu = (): React.JSX.Element => {
           </NavLink>
         ))}
       </nav>
-      <div className={`${styles.link}`}>
+      <div onClick={onLogout} className={`${styles.link}`}>
         <span className="text text_type_main-medium">Выход</span>
       </div>
       <p className="mt-20 text text_type_main-default">

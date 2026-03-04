@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { authApi } from './auth/api';
 import burgerReducer from './burger/burgerSlice';
 import { ingredientsApi } from './ingredients/api';
 import ingredientsReducer from './ingredients/ingredientsSlice';
@@ -13,9 +14,14 @@ export const store = configureStore({
     burger: burgerReducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
     order: orderReducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(ingredientsApi.middleware, ordersApi.middleware),
+    getDefaultMiddleware().concat(
+      ingredientsApi.middleware,
+      ordersApi.middleware,
+      authApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
