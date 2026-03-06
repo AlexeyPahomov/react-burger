@@ -16,7 +16,7 @@ export const ResetPasswordPage = (): React.JSX.Element => {
 
   useEffect(() => {
     if (!localStorage.getItem('passwordResetFlag')) {
-      navigate('/forgot-password', { replace: true }) as void;
+      navigate('/forgot-password') as void;
     }
   }, [navigate]);
 

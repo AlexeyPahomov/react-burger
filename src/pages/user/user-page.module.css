@@ -3,3 +3,9 @@
   flex-direction: column;
   gap: 24px;
 }
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}

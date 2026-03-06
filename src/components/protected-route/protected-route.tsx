@@ -22,11 +22,11 @@ export const ProtectedRoute = ({
   }
 
   if (requireAuth && !isAuth) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} />;
   }
 
   if (!requireAuth && isAuth) {
-    return <Navigate to={from} replace />;
+    return <Navigate to={from} />;
   }
 
   return <>{children}</>;

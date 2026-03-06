@@ -74,6 +74,20 @@ export const authApi = createApi({
       providesTags: ['User'],
     }),
 
+    // Обновление пользователя
+    updateUser: builder.mutation<
+      TUser,
+      { name: string; email: string; password: string }
+    >({
+      query: (userData) => ({
+        url: 'auth/user',
+        method: 'PATCH',
+        body: JSON.stringify(userData),
+      }),
+      transformResponse: (response: { success: boolean; user: TUser }) => response.user,
+      invalidatesTags: ['User'],
+    }),
+
     // Восстановление пароля
     forgotPassword: builder.mutation<ForgotPasswordResponse, ForgotPasswordRequest>({
       query: (credentials) => ({
@@ -99,6 +113,7 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useGetUserQuery,
+  useUpdateUserMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
 } = authApi;
