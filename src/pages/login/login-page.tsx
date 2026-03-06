@@ -1,7 +1,8 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
-import { useFromPath } from '@/hooks/useFromPath';
+import { useRedirectIfAuth } from '@/hooks/useRedirectIfAuth';
 import { useLoginMutation } from '@/services/auth/api';
+import { getFromPath } from '@/utils/fromPath';
 import {
   Input,
   PasswordInput,
@@ -11,8 +12,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = (): React.JSX.Element => {
+  useRedirectIfAuth();
+
   const navigate = useNavigate();
-  const { from } = useFromPath('/profile');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,6 +23,7 @@ export const LoginPage = (): React.JSX.Element => {
     login({ email, password })
       .unwrap()
       .then(() => {
+        const from = getFromPath();
         navigate(from) as void;
       })
       .catch((error) => {

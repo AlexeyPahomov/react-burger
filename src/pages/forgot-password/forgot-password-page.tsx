@@ -1,11 +1,14 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useRedirectIfAuth } from '@/hooks/useRedirectIfAuth';
 import { useForgotPasswordMutation } from '@/services/auth/api';
 import { Input, Button } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const ForgotPasswordPage = (): React.JSX.Element => {
+  useRedirectIfAuth();
+
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
 

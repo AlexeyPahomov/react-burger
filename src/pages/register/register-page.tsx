@@ -1,5 +1,6 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useRedirectIfAuth } from '@/hooks/useRedirectIfAuth';
 import { useRegisterMutation } from '@/services/auth/api';
 import {
   Input,
@@ -9,6 +10,8 @@ import {
 import { useState } from 'react';
 
 export const RegisterPage = (): React.JSX.Element => {
+  useRedirectIfAuth();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

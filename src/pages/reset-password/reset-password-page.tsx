@@ -1,5 +1,6 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useRedirectIfAuth } from '@/hooks/useRedirectIfAuth';
 import { useResetPasswordMutation } from '@/services/auth/api';
 import {
   Input,
@@ -10,6 +11,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const ResetPasswordPage = (): React.JSX.Element => {
+  useRedirectIfAuth();
+
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');

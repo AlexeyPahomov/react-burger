@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/useAuth';
-import { useFromPath } from '@/hooks/useFromPath';
+import { setFromPath } from '@/utils/fromPath';
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { Navigate } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 
 import type { ReactNode } from 'react';
 
@@ -10,23 +10,17 @@ type ProtectedRouteProps = {
   requireAuth?: boolean;
 };
 
-export const ProtectedRoute = ({
-  children,
-  requireAuth = true,
-}: ProtectedRouteProps): React.JSX.Element => {
+export const ProtectedRoute = ({ children }: ProtectedRouteProps): React.JSX.Element => {
   const { isAuth, isLoading } = useAuth();
-  const { from } = useFromPath();
+  const location = useLocation();
 
   if (isLoading) {
     return <Preloader />;
   }
 
-  if (requireAuth && !isAuth) {
-    return <Navigate to="/login" state={{ from: location.pathname }} />;
-  }
-
-  if (!requireAuth && isAuth) {
-    return <Navigate to={from} />;
+  if (!isAuth) {
+    setFromPath(location.pathname);
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;

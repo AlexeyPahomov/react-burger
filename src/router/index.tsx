@@ -32,40 +32,24 @@ export const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: (
-          <ProtectedRoute requireAuth={false}>
-            <LoginPage />
-          </ProtectedRoute>
-        ),
+        element: <LoginPage />,
       },
       {
         path: 'register',
-        element: (
-          <ProtectedRoute requireAuth={false}>
-            <RegisterPage />
-          </ProtectedRoute>
-        ),
+        element: <RegisterPage />,
       },
       {
         path: 'forgot-password',
-        element: (
-          <ProtectedRoute requireAuth={false}>
-            <ForgotPasswordPage />
-          </ProtectedRoute>
-        ),
+        element: <ForgotPasswordPage />,
       },
       {
         path: 'reset-password',
-        element: (
-          <ProtectedRoute requireAuth={false}>
-            <ResetPasswordPage />
-          </ProtectedRoute>
-        ),
+        element: <ResetPasswordPage />,
       },
       {
         path: 'profile',
         element: (
-          <ProtectedRoute requireAuth>
+          <ProtectedRoute>
             <ProfilePage />
           </ProtectedRoute>
         ),
