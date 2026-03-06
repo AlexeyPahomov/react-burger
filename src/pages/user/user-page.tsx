@@ -1,3 +1,4 @@
+import { useForm } from '@/hooks/useForm';
 import { useGetUserQuery, useUpdateUserMutation } from '@/services/auth/api';
 import { Button, Input, EmailInput } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect, useState } from 'react';
@@ -5,22 +6,23 @@ import { useEffect, useState } from 'react';
 import styles from './user-page.module.css';
 
 export const UserPage = (): React.JSX.Element => {
+  const { values, handleChange, setValues } = useForm({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const { name, email, password } = values;
   const [initialState, setInitialState] = useState({
     name: '',
     email: '',
     password: '',
   });
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const { data: user } = useGetUserQuery();
   useEffect(() => {
     if (user) {
       const { name, email } = user;
-      setName(name);
-      setEmail(email);
-      setPassword('');
+      setValues({ name, email, password: '' });
       setInitialState({ name, email, password: '' });
     }
   }, [user]);
@@ -30,14 +32,16 @@ export const UserPage = (): React.JSX.Element => {
     initialState.name !== name ||
     initialState.password !== password;
 
-  const resetChanges = (): void => {
-    setName(initialState.name);
-    setEmail(initialState.email);
-    setPassword(initialState.password);
+  const resetChanges = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    setValues({ ...initialState });
   };
 
   const [updateUser] = useUpdateUserMutation();
-  const applyChanges = (): void => {
+  const applyChanges = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
     updateUser({ email, name, password })
       .then()
       .catch((error) => {
@@ -46,36 +50,37 @@ export const UserPage = (): React.JSX.Element => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <form onSubmit={applyChanges} onReset={resetChanges} className={styles.wrapper}>
       <Input
         icon="EditIcon"
         value={name}
-        onChange={({ target }) => setName(target.value)}
+        name="name"
+        onChange={handleChange}
         placeholder="Имя"
       />
       <EmailInput
         isIcon
         value={email}
-        onChange={({ target }) => setEmail(target.value)}
+        name="email"
+        onChange={handleChange}
         placeholder="Логин"
       />
       <Input
         icon="EditIcon"
         value={password}
-        onChange={({ target }) => setPassword(target.value)}
+        name="password"
+        onChange={handleChange}
         placeholder="Пароль"
       />
       {hasChanges && (
         <div className={`${styles.actions}`}>
-          <Button onClick={resetChanges} type="secondary" htmlType="button">
+          <Button type="secondary" htmlType="reset">
             Отмена
           </Button>
-          <Button onClick={applyChanges} htmlType="button">
-            Сохранить
-          </Button>
+          <Button htmlType="submit">Сохранить</Button>
         </div>
       )}
-    </div>
+    </form>
   );
 };
 export default UserPage;

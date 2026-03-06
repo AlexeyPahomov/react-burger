@@ -1,5 +1,6 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useForm } from '@/hooks/useForm';
 import { useRedirectIfAuth } from '@/hooks/useRedirectIfAuth';
 import { useLoginMutation } from '@/services/auth/api';
 import { getFromPath } from '@/utils/fromPath';
@@ -8,18 +9,20 @@ import {
   PasswordInput,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = (): React.JSX.Element => {
   useRedirectIfAuth();
 
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  const { values, handleChange } = useForm({ email: '', password: '' });
+  const { email, password } = values;
 
   const [login] = useLoginMutation();
-  const loginUser = (): void => {
+  const loginUser = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
     login({ email, password })
       .unwrap()
       .then(() => {
@@ -33,26 +36,29 @@ export const LoginPage = (): React.JSX.Element => {
 
   return (
     <PageWrapper title="Вход">
-      <Input
-        onChange={({ target }) => setEmail(target.value)}
-        value={email}
-        placeholder="E-mail"
-        extraClass="mb-6"
-      />
-      <PasswordInput
-        onChange={({ target }) => setPassword(target.value)}
-        value={password}
-        placeholder="Пароль"
-        extraClass="mb-6"
-      />
-      <Button
-        onClick={loginUser}
-        disabled={!login || !password}
-        htmlType="button"
-        extraClass="mb-20"
-      >
-        Войти
-      </Button>
+      <form onSubmit={loginUser}>
+        <Input
+          onChange={handleChange}
+          value={values.email}
+          placeholder="E-mail"
+          extraClass="mb-6"
+          name="email"
+        />
+        <PasswordInput
+          onChange={handleChange}
+          value={values.password}
+          placeholder="Пароль"
+          extraClass="mb-6"
+          name="password"
+        />
+        <Button
+          disabled={!values.email || !values.password}
+          htmlType="submit"
+          extraClass="mb-20"
+        >
+          Войти
+        </Button>
+      </form>
       <TextLink
         text="Вы новый пользователь?"
         title="Зарегистрироваться"

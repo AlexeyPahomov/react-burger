@@ -1,5 +1,6 @@
 import PageWrapper from '@/components/page-wrapper/page-wrapper';
 import TextLink from '@/components/text-link/text-link';
+import { useForm } from '@/hooks/useForm';
 import { useRedirectIfAuth } from '@/hooks/useRedirectIfAuth';
 import { useRegisterMutation } from '@/services/auth/api';
 import {
@@ -7,17 +8,17 @@ import {
   PasswordInput,
   Button,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
 
 export const RegisterPage = (): React.JSX.Element => {
   useRedirectIfAuth();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({ name: '', email: '', password: '' });
+  const { name, email, password } = values;
 
   const [register] = useRegisterMutation();
-  const registerUser = (): void => {
+  const registerUser = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
     register({ email, password, name })
       .unwrap()
       .then()
@@ -28,31 +29,35 @@ export const RegisterPage = (): React.JSX.Element => {
 
   return (
     <PageWrapper title="Регистрация">
-      <Input
-        value={name}
-        placeholder="Имя"
-        onChange={({ target }) => setName(target.value)}
-        extraClass="mb-6"
-      />
-      <Input
-        value={email}
-        placeholder="E-mail"
-        onChange={({ target }) => setEmail(target.value)}
-        extraClass="mb-6"
-      />
-      <PasswordInput
-        value={password}
-        onChange={({ target }) => setPassword(target.value)}
-        extraClass="mb-6"
-      />
-      <Button
-        onClick={registerUser}
-        disabled={!name || !email || !password}
-        htmlType="button"
-        extraClass="mb-20"
-      >
-        Зарегистрироваться
-      </Button>
+      <form onSubmit={registerUser}>
+        <Input
+          value={name}
+          placeholder="Имя"
+          name="name"
+          onChange={handleChange}
+          extraClass="mb-6"
+        />
+        <Input
+          value={email}
+          placeholder="E-mail"
+          name="email"
+          onChange={handleChange}
+          extraClass="mb-6"
+        />
+        <PasswordInput
+          value={password}
+          onChange={handleChange}
+          name="password"
+          extraClass="mb-6"
+        />
+        <Button
+          disabled={!name || !email || !password}
+          htmlType="submit"
+          extraClass="mb-20"
+        >
+          Зарегистрироваться
+        </Button>
+      </form>
       <TextLink text="Уже зарегистрированы?" title="Войти" link="/login" />
     </PageWrapper>
   );
