@@ -22,7 +22,7 @@ export const ProtectedRoute = ({
   }
 
   if (requireAuth && !isAuth) {
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to="/login" state={{ from: location.pathname }} />;
   }
 
   if (!requireAuth && isAuth) {

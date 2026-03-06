@@ -1,4 +1,5 @@
 import { Modal } from '@/components/modal/modal';
+import { useAuth } from '@/hooks/useAuth';
 import { useBurger } from '@/hooks/useBurger';
 import { useDndRef } from '@/hooks/useDndRef';
 import { useOrderModal } from '@/hooks/useOrderModal';
@@ -52,6 +53,8 @@ export const BurgerConstructor = (): React.JSX.Element => {
   const dropIngredient = (ingredient: TBurgerIngredient, index: number): void => {
     setIngredientPosition(ingredient, index);
   };
+
+  const { isAuth } = useAuth();
 
   return (
     <section className={`pt-25 pl-4 ${styles.burger_constructor}`}>
@@ -113,7 +116,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
           size="large"
           type="primary"
           htmlType="button"
-          disabled={!bun}
+          disabled={!(bun && isAuth)}
         >
           Оформить заказ
         </Button>
