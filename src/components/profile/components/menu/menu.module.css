@@ -1,0 +1,21 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+
+  p {
+    width: 320px;
+    color: var(--text-inactive-color);
+  }
+}
+
+.link {
+  display: flex;
+  height: 64px;
+  color: var(--text-inactive-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.active {
+  color: var(--text-primary-color) !important;
+}

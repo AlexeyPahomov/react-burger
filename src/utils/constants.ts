@@ -23,3 +23,16 @@ export const ingredientTypeValues: {
 ];
 
 export const baseUrl = 'https://new-stellarburgers.education-services.ru/api';
+
+export const profileMenu = [
+  {
+    id: '1',
+    title: 'Профиль',
+    to: '/profile',
+  },
+  {
+    id: '2',
+    title: 'История заказов',
+    to: '/profile/orders',
+  },
+];

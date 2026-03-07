@@ -1,8 +1,10 @@
+import { useAuth } from '@/hooks/useAuth';
 import { useModal } from '@/hooks/useModal';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { useCreateOrderMutation } from '@/services/orders/api';
 import { setOrderNumber, clearOrder } from '@/services/orders/orderSlice';
 import { selectOrder } from '@/services/selectors';
+import { useNavigate } from 'react-router-dom';
 
 import { useBurger } from './useBurger';
 
@@ -34,7 +36,15 @@ export function useOrderModal(): TUseOrderResult {
     return ingredientsToOrder;
   };
 
+  const navigate = useNavigate();
+  const { isAuth } = useAuth();
+
   const handleCreateOrder = (): void => {
+    if (!isAuth) {
+      navigate('/login', { replace: true }) as void;
+      return;
+    }
+
     const ingredientsToOrder = getIngredientsToOrder();
     if (!ingredientsToOrder) return;
 

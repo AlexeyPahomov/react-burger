@@ -8,12 +8,10 @@ import styles from './ingredient-card.module.css';
 
 type IngredientCardProps = {
   ingredient: TIngredientWithCounter;
-  onClick: () => void;
 };
 
 export const IngredientCard = ({
   ingredient,
-  onClick,
 }: IngredientCardProps): React.JSX.Element => {
   const { image, name, price, count } = ingredient;
 
@@ -25,7 +23,7 @@ export const IngredientCard = ({
 
   return (
     <>
-      <div onClick={onClick} className={styles.ingredient_card} ref={dragRef}>
+      <div className={styles.ingredient_card} ref={dragRef}>
         <div className={styles.ingredient_counter}>
           {count > 0 && <Counter count={count} />}
         </div>
