@@ -1,5 +1,7 @@
 import { useIngredients } from '@/hooks/useIngredients';
+import { useGetIngredientsQuery } from '@/services/ingredients/api';
 import { useGetFeedOrdersQuery } from '@/services/orders/api';
+import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -55,6 +57,7 @@ const buildStatusColumns = (numbers: string[]): string[][] => {
 export const Feed = (): React.JSX.Element => {
   const location = useLocation();
   const { getIngredient } = useIngredients();
+  const { isLoading: isIngredientsLoading } = useGetIngredientsQuery();
   const { data: feedOrdersData } = useGetFeedOrdersQuery();
   const wsData: TFeedWsResponse = feedOrdersData ?? {
     success: true,
@@ -118,6 +121,10 @@ export const Feed = (): React.JSX.Element => {
       ),
     [wsData.orders]
   );
+
+  if (isIngredientsLoading) {
+    return <Preloader />;
+  }
 
   return (
     <div className={styles.page}>

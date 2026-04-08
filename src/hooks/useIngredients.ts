@@ -25,7 +25,7 @@ export function useIngredients(): TUseIngredientsResult {
     if (data !== undefined) {
       dispatch(setIngredients(data));
     }
-  }, []);
+  }, [data, dispatch]);
 
   const ingredients = useAppSelector(selectIngredients);
   const filtredIngredients = useCallback(
