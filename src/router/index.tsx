@@ -1,5 +1,6 @@
 import App from '@/components/app/app';
 import IngredientDetailsModal from '@/components/ingredient-details-modal/ingredient-details-modal';
+import OrderDetailsModal from '@/components/order-details-modal/order-details-modal';
 import ProtectedRoute from '@/components/protected-route/protected-route';
 import { profileLoader } from '@/loaders/profile-loader';
 import {
@@ -69,6 +70,12 @@ export const router = createBrowserRouter([
       {
         path: 'feed',
         element: <FeedPage />,
+        children: [
+          {
+            path: ':id',
+            element: <OrderDetailsModal />,
+          },
+        ],
       },
       {
         path: '*',

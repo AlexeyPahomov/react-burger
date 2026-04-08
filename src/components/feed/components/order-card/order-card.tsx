@@ -8,6 +8,7 @@ export type TOrderCardIngredient = {
   id: string;
   image: string;
   name: string;
+  price: number;
 };
 
 export type TOrderCardProps = {

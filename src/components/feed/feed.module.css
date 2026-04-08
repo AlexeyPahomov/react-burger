@@ -52,3 +52,9 @@
 .card_row {
   width: 100%;
 }
+
+.card_link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
