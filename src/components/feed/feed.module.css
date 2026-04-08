@@ -1,0 +1,60 @@
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1240px;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 24px 20px;
+  overflow: hidden;
+}
+
+.feed_row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 60px;
+  width: 100%;
+  min-height: 0;
+}
+
+.cards_column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 584px;
+  min-height: 0;
+}
+
+.board_slot {
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.cards {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  padding-right: 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.card_row {
+  width: 100%;
+}
+
+.card_link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}

@@ -7,3 +7,4 @@ export * from './reset-password/reset-password-page';
 export * from './profile/profile-page';
 export * from './profile-order/profile-order-page';
 export * from './user/user-page';
+export * from './feed/feed-page';

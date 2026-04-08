@@ -1,5 +1,6 @@
 import App from '@/components/app/app';
 import IngredientDetailsModal from '@/components/ingredient-details-modal/ingredient-details-modal';
+import OrderDetailsModal from '@/components/order-details-modal/order-details-modal';
 import ProtectedRoute from '@/components/protected-route/protected-route';
 import { profileLoader } from '@/loaders/profile-loader';
 import {
@@ -12,6 +13,7 @@ import {
   ProfilePage,
   ProfileOrderPage,
   UserPage,
+  FeedPage,
 } from '@/pages';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -62,6 +64,22 @@ export const router = createBrowserRouter([
           {
             path: 'orders',
             element: <ProfileOrderPage />,
+            children: [
+              {
+                path: ':id',
+                element: <OrderDetailsModal />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: 'feed',
+        element: <FeedPage />,
+        children: [
+          {
+            path: ':id',
+            element: <OrderDetailsModal />,
           },
         ],
       },
