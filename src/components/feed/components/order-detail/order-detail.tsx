@@ -62,7 +62,7 @@ export const OrderDetail = ({ order }: TOrderDetailProps): React.JSX.Element => 
 
       <div className={styles.footer}>
         <span className="text text_type_main-default text_color_inactive">
-          {order.timeLabel} i-GMT+3
+          {order.timeLabel}
         </span>
         <div className={styles.total}>
           <span className="text text_type_digits-default">{order.totalPrice}</span>
