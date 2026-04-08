@@ -232,11 +232,16 @@ export const ordersApi = createApi({
       },
     }),
     createOrder: builder.mutation<TCreateOrderResponse, TOrder>({
-      query: (body) => ({
-        url: 'orders',
-        method: 'POST',
-        body,
-      }),
+      query: (body) => {
+        const accessToken = getAccessToken();
+
+        return {
+          url: 'orders',
+          method: 'POST',
+          body,
+          headers: accessToken ? { authorization: accessToken } : undefined,
+        };
+      },
     }),
   }),
 });
