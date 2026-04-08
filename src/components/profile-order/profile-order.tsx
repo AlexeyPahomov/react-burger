@@ -34,16 +34,14 @@ const getTimeLabel = (value: string): string => {
   return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
 };
 
-const getStatusLabel = (status: string): string => {
+const getOrderStatus = (status: string): TOrderCardProps['status'] => {
   if (status === 'done') {
-    return 'Выполнен';
+    return 'done';
   }
-
   if (status === 'pending') {
-    return 'Готовится';
+    return 'pending';
   }
-
-  return 'Создан';
+  return 'created';
 };
 
 export const ProfileOrder = (): React.JSX.Element => {
@@ -80,13 +78,7 @@ export const ProfileOrder = (): React.JSX.Element => {
         name: order.name ?? 'Соберите бургер',
         ingredients,
         totalPrice: ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0),
-        statusLabel: getStatusLabel(order.status),
-        statusType:
-          order.status === 'done'
-            ? 'done'
-            : order.status === 'pending'
-              ? 'pending'
-              : 'created',
+        status: getOrderStatus(order.status),
       };
     });
   }, [data?.orders, getIngredient]);
@@ -106,8 +98,7 @@ export const ProfileOrder = (): React.JSX.Element => {
                 timeLabel={order.timeLabel}
                 name={order.name}
                 ingredients={order.ingredients}
-                statusLabel={order.statusLabel}
-                statusType={order.statusType}
+                status={order.status}
               />
             </NavLink>
           </li>

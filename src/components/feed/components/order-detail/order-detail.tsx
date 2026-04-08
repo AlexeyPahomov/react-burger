@@ -17,6 +17,13 @@ type TGroupedIngredient = {
 };
 
 export const OrderDetail = ({ order }: TOrderDetailProps): React.JSX.Element => {
+  const statusLabelMap = new Map([
+    ['done', 'Выполнен'],
+    ['pending', 'В работе'],
+    ['created', 'Создан'],
+  ]);
+  const statusLabel = statusLabelMap.get(order.status) ?? 'Создан';
+  const isDoneStatus = order.status === 'done';
   const groupedIngredients = order.ingredients.reduce<TGroupedIngredient[]>(
     (acc, ingredient) => {
       const existedIngredient = acc.find((item) => item.id === ingredient.id);
@@ -34,7 +41,13 @@ export const OrderDetail = ({ order }: TOrderDetailProps): React.JSX.Element => 
     <section className={styles.container}>
       <span className="text text_type_digits-default">#{order.orderNumber}</span>
       <h2 className={`text text_type_main-medium ${styles.title}`}>{order.name}</h2>
-      <span className={`text text_type_main-default ${styles.status}`}>Выполнен</span>
+      <span
+        className={`text text_type_main-default ${styles.status} ${
+          isDoneStatus ? styles.status_done : ''
+        }`}
+      >
+        {statusLabel}
+      </span>
 
       <h3 className={`text text_type_main-medium ${styles.composition_title}`}>
         Состав:

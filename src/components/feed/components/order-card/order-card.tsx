@@ -3,6 +3,11 @@ import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import styles from './order-card.module.css';
 
 const maxImagesBeforeMore = 5;
+const statusLabelMap = new Map<TOrderStatus, string>([
+  ['done', 'Выполнен'],
+  ['pending', 'В работе'],
+  ['created', 'Создан'],
+]);
 
 export type TOrderCardIngredient = {
   id: string;
@@ -11,14 +16,15 @@ export type TOrderCardIngredient = {
   price: number;
 };
 
+export type TOrderStatus = 'done' | 'pending' | 'created';
+
 export type TOrderCardProps = {
   orderNumber: string;
   timeLabel: string;
   name: string;
   ingredients: TOrderCardIngredient[];
   totalPrice: number;
-  statusLabel?: string;
-  statusType?: 'done' | 'pending' | 'created';
+  status: TOrderStatus;
 };
 
 type TOrderCardViewProps = Omit<TOrderCardProps, 'totalPrice'>;
@@ -28,8 +34,7 @@ export const OrderCard = ({
   timeLabel,
   name,
   ingredients,
-  statusLabel,
-  statusType,
+  status,
 }: TOrderCardViewProps): React.JSX.Element => {
   const extraCount =
     ingredients.length > maxImagesBeforeMore
@@ -41,6 +46,7 @@ export const OrderCard = ({
 
   const morePreview =
     ingredients[maxImagesBeforeMore - 1] ?? ingredients[ingredients.length - 1];
+  const statusLabel = statusLabelMap.get(status);
 
   return (
     <div className={styles.card}>
@@ -54,7 +60,7 @@ export const OrderCard = ({
       {statusLabel && (
         <span
           className={`text text_type_main-default ${styles.status} ${
-            statusType === 'done' ? styles.status_done : ''
+            status === 'done' ? styles.status_done : ''
           }`}
         >
           {statusLabel}

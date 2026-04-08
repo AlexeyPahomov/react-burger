@@ -34,6 +34,16 @@ const getTimeLabel = (value: string): string => {
   return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
 };
 
+const getOrderStatus = (status: string): TOrderCardProps['status'] => {
+  if (status === 'done') {
+    return 'done';
+  }
+  if (status === 'pending') {
+    return 'pending';
+  }
+  return 'created';
+};
+
 export const OrderDetailsModal = (): React.JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -77,6 +87,7 @@ export const OrderDetailsModal = (): React.JSX.Element => {
       name: socketOrder.name ?? 'Соберите бургер',
       ingredients,
       totalPrice: ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0),
+      status: getOrderStatus(socketOrder.status),
     };
   }, [getIngredient, socketOrder]);
   const order = state?.order ?? orderFromSocket;

@@ -54,6 +54,16 @@ const buildStatusColumns = (numbers: string[]): string[][] => {
   ).filter((column) => column.length > 0);
 };
 
+const getOrderStatus = (status: string): TOrderCardProps['status'] => {
+  if (status === 'done') {
+    return 'done';
+  }
+  if (status === 'pending') {
+    return 'pending';
+  }
+  return 'created';
+};
+
 export const Feed = (): React.JSX.Element => {
   const location = useLocation();
   const { getIngredient } = useIngredients();
@@ -98,6 +108,7 @@ export const Feed = (): React.JSX.Element => {
         name: order.name ?? 'Соберите бургер',
         ingredients: orderIngredients,
         totalPrice,
+        status: getOrderStatus(order.status),
       };
     });
   }, [getIngredient, wsData.orders]);
@@ -144,6 +155,7 @@ export const Feed = (): React.JSX.Element => {
                     timeLabel={order.timeLabel}
                     name={order.name}
                     ingredients={order.ingredients}
+                    status={order.status}
                   />
                 </NavLink>
               </li>

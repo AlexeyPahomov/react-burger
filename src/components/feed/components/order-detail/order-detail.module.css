@@ -11,6 +11,10 @@
 
 .status {
   margin-top: 8px;
+  color: var(--text-primary-color);
+}
+
+.status_done {
   color: #0cc;
 }
 
