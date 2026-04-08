@@ -40,10 +40,12 @@ export type TCreateOrderResponse = {
   success: boolean;
 };
 
+export type TOrderStatus = 'done' | 'pending' | 'created';
+
 export type TFeedOrder = {
   _id: string;
   ingredients: string[];
-  status: string;
+  status: TOrderStatus;
   number: number;
   createdAt: string;
   updatedAt: string;

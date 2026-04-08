@@ -1,22 +1,18 @@
+import { statusLabelMap } from '@/utils/constants';
 import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+
+import type { TOrderStatus } from '@/utils/types';
 
 import styles from './order-card.module.css';
 
 const maxImagesBeforeMore = 5;
-const statusLabelMap = new Map<TOrderStatus, string>([
-  ['done', 'Выполнен'],
-  ['pending', 'В работе'],
-  ['created', 'Создан'],
-]);
 
-export type TOrderCardIngredient = {
+type TOrderCardIngredient = {
   id: string;
   image: string;
   name: string;
   price: number;
 };
-
-export type TOrderStatus = 'done' | 'pending' | 'created';
 
 export type TOrderCardProps = {
   orderNumber: string;

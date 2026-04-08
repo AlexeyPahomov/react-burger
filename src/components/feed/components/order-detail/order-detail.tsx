@@ -1,3 +1,4 @@
+import { statusLabelMap } from '@/utils/constants';
 import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import type { TOrderCardProps } from '../order-card/order-card';
@@ -17,11 +18,6 @@ type TGroupedIngredient = {
 };
 
 export const OrderDetail = ({ order }: TOrderDetailProps): React.JSX.Element => {
-  const statusLabelMap = new Map([
-    ['done', 'Выполнен'],
-    ['pending', 'В работе'],
-    ['created', 'Создан'],
-  ]);
   const statusLabel = statusLabelMap.get(order.status) ?? 'Создан';
   const isDoneStatus = order.status === 'done';
   const groupedIngredients = order.ingredients.reduce<TGroupedIngredient[]>(

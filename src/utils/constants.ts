@@ -1,4 +1,4 @@
-import type { TIngredientType } from '@/utils/types';
+import type { TIngredientType, TOrderStatus } from '@/utils/types';
 
 export const ingredientTypeValues: {
   id: number;
@@ -26,6 +26,11 @@ export const baseUrl = 'https://new-stellarburgers.education-services.ru/api';
 export const feedWsUrl = 'wss://new-stellarburgers.education-services.ru/orders/all';
 export const profileOrdersWsUrl =
   'wss://new-stellarburgers.education-services.ru/orders';
+export const statusLabelMap = new Map<TOrderStatus, string>([
+  ['done', 'Выполнен'],
+  ['pending', 'В работе'],
+  ['created', 'Создан'],
+]);
 
 export const profileMenu = [
   {
