@@ -12,6 +12,7 @@ import {
   ProfilePage,
   ProfileOrderPage,
   UserPage,
+  FeedPage,
 } from '@/pages';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
             element: <ProfileOrderPage />,
           },
         ],
+      },
+      {
+        path: 'feed',
+        element: <FeedPage />,
       },
       {
         path: '*',

@@ -1,0 +1,63 @@
+.board {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+
+.status_row {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+}
+
+.status_column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.status_title {
+  margin: 0;
+  color: var(--text-primary-color);
+}
+
+.order_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order_num {
+  margin: 0;
+}
+
+.order_num_ready {
+  color: #0cc;
+  text-shadow: 0 0 16px rgb(0 204 204 / 40%);
+}
+
+.order_num_progress {
+  color: var(--text-primary-color);
+}
+
+.block_offset {
+  margin-top: 60px;
+}
+
+.stat_heading {
+  margin: 0 0 8px;
+  color: var(--text-primary-color);
+}
+
+.stat_value {
+  margin: 0;
+  color: var(--text-primary-color);
+  text-shadow:
+    0 0 16px rgb(76 76 255 / 55%),
+    0 0 32px rgb(51 51 255 / 35%);
+}
