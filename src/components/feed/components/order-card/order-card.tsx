@@ -2,7 +2,7 @@ import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 
 import styles from './order-card.module.css';
 
-const MAX_IMAGES_BEFORE_MORE = 5;
+const maxImagesBeforeMore = 5;
 
 export type TOrderCardIngredient = {
   id: string;
@@ -16,25 +16,31 @@ export type TOrderCardProps = {
   timeLabel: string;
   name: string;
   ingredients: TOrderCardIngredient[];
-  price: number;
+  totalPrice: number;
+  statusLabel?: string;
+  statusType?: 'done' | 'pending' | 'created';
 };
+
+type TOrderCardViewProps = Omit<TOrderCardProps, 'totalPrice'>;
 
 export const OrderCard = ({
   orderNumber,
   timeLabel,
   name,
   ingredients,
-  price,
-}: TOrderCardProps): React.JSX.Element => {
+  statusLabel,
+  statusType,
+}: TOrderCardViewProps): React.JSX.Element => {
   const extraCount =
-    ingredients.length > MAX_IMAGES_BEFORE_MORE
-      ? ingredients.length - MAX_IMAGES_BEFORE_MORE
+    ingredients.length > maxImagesBeforeMore
+      ? ingredients.length - maxImagesBeforeMore
       : 0;
+  const totalPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
 
-  const visible = ingredients.slice(0, MAX_IMAGES_BEFORE_MORE);
+  const visible = ingredients.slice(0, maxImagesBeforeMore);
 
   const morePreview =
-    ingredients[MAX_IMAGES_BEFORE_MORE - 1] ?? ingredients[ingredients.length - 1];
+    ingredients[maxImagesBeforeMore - 1] ?? ingredients[ingredients.length - 1];
 
   return (
     <div className={styles.card}>
@@ -45,11 +51,20 @@ export const OrderCard = ({
         <span className={`text text_type_main-default ${styles.time}`}>{timeLabel}</span>
       </div>
       <h2 className={`text text_type_main-medium ${styles.title}`}>{name}</h2>
+      {statusLabel && (
+        <span
+          className={`text text_type_main-default ${styles.status} ${
+            statusType === 'done' ? styles.status_done : ''
+          }`}
+        >
+          {statusLabel}
+        </span>
+      )}
       <div className={styles.footer}>
         <ul className={styles.icons}>
           {visible.map((ingredient, index) => (
             <li
-              key={ingredient.id}
+              key={`${ingredient.id}-${index}`}
               className={styles.icon_item}
               style={{ zIndex: index + 1 }}
             >
@@ -63,10 +78,7 @@ export const OrderCard = ({
             </li>
           ))}
           {extraCount > 0 && morePreview && (
-            <li
-              className={styles.icon_item}
-              style={{ zIndex: MAX_IMAGES_BEFORE_MORE + 1 }}
-            >
+            <li className={styles.icon_item} style={{ zIndex: maxImagesBeforeMore + 1 }}>
               <div className={`${styles.icon_ring} ${styles.icon_ring_more}`}>
                 <img src={morePreview.image} alt="" className={styles.icon_img} />
                 <div className={styles.more_overlay} aria-hidden />
@@ -78,7 +90,7 @@ export const OrderCard = ({
           )}
         </ul>
         <div className={styles.price}>
-          <span className="text text_type_digits-default">{price}</span>
+          <span className="text text_type_digits-default">{totalPrice}</span>
           <CurrencyIcon type="primary" className={styles.price_icon} />
         </div>
       </div>

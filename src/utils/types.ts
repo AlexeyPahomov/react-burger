@@ -40,6 +40,23 @@ export type TCreateOrderResponse = {
   success: boolean;
 };
 
+export type TFeedOrder = {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name?: string;
+};
+
+export type TFeedWsResponse = {
+  success: boolean;
+  orders: TFeedOrder[];
+  total: number;
+  totalToday: number;
+};
+
 export type TUser = {
   email: string;
   name: string;

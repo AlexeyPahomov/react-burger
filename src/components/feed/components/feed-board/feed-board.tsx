@@ -1,8 +1,8 @@
 import styles from './feed-board.module.css';
 
 type TFeedBoardProps = {
-  readyOrderNumbers: string[];
-  inProgressOrderNumbers: string[];
+  readyOrderNumbers: string[][];
+  inProgressOrderNumbers: string[][];
   totalCompleted: number;
   completedToday: number;
 };
@@ -21,33 +21,41 @@ export const FeedBoard = ({
       <div className={styles.status_row}>
         <div className={styles.status_column}>
           <p className={`${styles.status_title} text text_type_main-medium`}>Готовы:</p>
-          <ul className={styles.order_list}>
-            {readyOrderNumbers.map((num) => (
-              <li key={num}>
-                <p
-                  className={`text text_type_digits-default ${styles.order_num} ${styles.order_num_ready}`}
-                >
-                  {num}
-                </p>
-              </li>
+          <div className={styles.order_columns}>
+            {readyOrderNumbers.map((column, index) => (
+              <ul key={index} className={styles.order_list}>
+                {column.map((num) => (
+                  <li key={num}>
+                    <p
+                      className={`text text_type_digits-default ${styles.order_num} ${styles.order_num_ready}`}
+                    >
+                      {num}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ul>
+          </div>
         </div>
         <div className={styles.status_column}>
           <p className={`${styles.status_title} text text_type_main-medium`}>
             В работе:
           </p>
-          <ul className={styles.order_list}>
-            {inProgressOrderNumbers.map((num) => (
-              <li key={num}>
-                <p
-                  className={`text text_type_digits-default ${styles.order_num} ${styles.order_num_progress}`}
-                >
-                  {num}
-                </p>
-              </li>
+          <div className={styles.order_columns}>
+            {inProgressOrderNumbers.map((column, index) => (
+              <ul key={index} className={styles.order_list}>
+                {column.map((num) => (
+                  <li key={num}>
+                    <p
+                      className={`text text_type_digits-default ${styles.order_num} ${styles.order_num_progress}`}
+                    >
+                      {num}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
 

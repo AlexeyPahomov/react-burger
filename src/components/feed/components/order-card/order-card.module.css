@@ -30,6 +30,14 @@
   margin: 0;
 }
 
+.status {
+  color: var(--text-primary-color);
+}
+
+.status_done {
+  color: #0cc;
+}
+
 .footer {
   display: flex;
   flex-direction: row;

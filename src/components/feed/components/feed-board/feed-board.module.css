@@ -18,6 +18,11 @@
   min-width: 0;
 }
 
+.order_columns {
+  display: flex;
+  gap: 24px;
+}
+
 .status_title {
   margin: 0;
   color: var(--text-primary-color);

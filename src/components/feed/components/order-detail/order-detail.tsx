@@ -65,7 +65,7 @@ export const OrderDetail = ({ order }: TOrderDetailProps): React.JSX.Element => 
           {order.timeLabel} i-GMT+3
         </span>
         <div className={styles.total}>
-          <span className="text text_type_digits-default">{order.price}</span>
+          <span className="text text_type_digits-default">{order.totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
       </div>

@@ -23,6 +23,9 @@ export const ingredientTypeValues: {
 ];
 
 export const baseUrl = 'https://new-stellarburgers.education-services.ru/api';
+export const feedWsUrl = 'wss://new-stellarburgers.education-services.ru/orders/all';
+export const profileOrdersWsUrl =
+  'wss://new-stellarburgers.education-services.ru/orders';
 
 export const profileMenu = [
   {
