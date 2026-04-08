@@ -17,6 +17,11 @@ export const OrderDetailsModal = (): React.JSX.Element => {
       return;
     }
 
+    if (location.pathname.startsWith('/profile/orders')) {
+      navigate('/profile/orders') as void;
+      return;
+    }
+
     navigate('/feed') as void;
   };
 
