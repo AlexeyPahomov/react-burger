@@ -3,11 +3,12 @@ import { describe, expect, it, vi } from 'vitest';
 import reducer, {
   addIngredient,
   clearBurger,
+  initialState,
   removeIngredient,
   setIngredientPosition,
 } from './burgerSlice';
 
-import type { TBurgerIngredient, TIngredient } from '@/utils/types';
+import type { TBurger, TBurgerIngredient, TIngredient } from '@/utils/types';
 
 vi.mock('uuid', () => ({
   v4: (): string => 'test-uuid',
@@ -29,6 +30,12 @@ const createIngredient = (overrides: Partial<TIngredient> = {}): TIngredient => 
   ...overrides,
 });
 
+const BUN_INGREDIENT_OVERRIDES: Partial<TIngredient> = {
+  _id: 'bun-id',
+  type: 'bun',
+  name: 'Bun',
+};
+
 const createBurgerIngredient = (
   overrides: Partial<TBurgerIngredient> = {}
 ): TBurgerIngredient => ({
@@ -39,14 +46,11 @@ const createBurgerIngredient = (
 
 describe('burgerSlice reducer', () => {
   it('returns initial state', () => {
-    expect(reducer(undefined, { type: '' })).toEqual({
-      bun: null,
-      ingredients: [],
-    });
+    expect(reducer(undefined, { type: '' })).toEqual(initialState);
   });
 
   it('adds bun to burger', () => {
-    const bun = createIngredient({ _id: 'bun-id', type: 'bun', name: 'Bun' });
+    const bun = createIngredient(BUN_INGREDIENT_OVERRIDES);
     const state = reducer(undefined, addIngredient(bun));
 
     expect(state.bun).toEqual({
@@ -72,9 +76,8 @@ describe('burgerSlice reducer', () => {
   it('removes ingredient by id', () => {
     const first = createBurgerIngredient({ id: 'first-id', _id: 'first-main-id' });
     const second = createBurgerIngredient({ id: 'second-id', _id: 'second-main-id' });
-
     const state = reducer(
-      { bun: null, ingredients: [first, second] },
+      { ...initialState, ingredients: [first, second] } as TBurger,
       removeIngredient('first-id')
     );
 
@@ -85,9 +88,8 @@ describe('burgerSlice reducer', () => {
     const first = createBurgerIngredient({ id: 'first-id', name: 'First' });
     const second = createBurgerIngredient({ id: 'second-id', name: 'Second' });
     const third = createBurgerIngredient({ id: 'third-id', name: 'Third' });
-
     const state = reducer(
-      { bun: null, ingredients: [first, second, third] },
+      { ...initialState, ingredients: [first, second, third] } as TBurger,
       setIngredientPosition({ ingredient: third, position: 0 })
     );
 
@@ -95,13 +97,10 @@ describe('burgerSlice reducer', () => {
   });
 
   it('clears burger state', () => {
-    const bun = createBurgerIngredient({ id: 'bun-id', type: 'bun' });
+    const bun = createBurgerIngredient({ id: 'bun-id', ...BUN_INGREDIENT_OVERRIDES });
     const ingredient = createBurgerIngredient({ id: 'ingredient-id' });
     const state = reducer({ bun, ingredients: [ingredient] }, clearBurger());
 
-    expect(state).toEqual({
-      bun: null,
-      ingredients: [],
-    });
+    expect(state).toEqual(initialState);
   });
 });

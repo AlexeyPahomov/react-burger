@@ -44,48 +44,9 @@ test('страница конструктора: drag and drop, заказ и м
     await source.dispatchEvent('dragend', { dataTransfer });
   };
 
-  await page.route('**/api/ingredients', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        success: true,
-        data: [bun, main],
-      }),
-    });
-  });
-
-  await page.route('**/api/auth/user', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        success: true,
-        user: {
-          email: 'test@example.com',
-          name: 'Test User',
-        },
-      }),
-    });
-  });
-
-  await page.route('**/api/orders', async (route) => {
-    if (route.request().method() !== 'POST') {
-      await route.fallback();
-      return;
-    }
-
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        success: true,
-        name: 'Тестовый бургер',
-        order: {
-          number: 123456,
-        },
-      }),
-    });
+  await page.routeFromHAR('e2e/fixtures/constructor-api.har', {
+    url: '**/api/**',
+    notFound: 'abort',
   });
 
   await page.addInitScript(() => {
