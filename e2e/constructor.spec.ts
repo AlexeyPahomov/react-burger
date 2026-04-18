@@ -54,15 +54,15 @@ test('страница конструктора: drag and drop, заказ и м
     localStorage.setItem('refreshToken', 'test-refresh-token');
   });
 
-  await page.goto('/');
+  await page.goto('');
   await expect(page.getByText('Соберите бургер')).toBeVisible();
-  await expect(page).not.toHaveURL(/\/login$/);
+  await expect(page).not.toHaveURL(/\/login/);
 
   await page.getByRole('link', { name: bun.name }).click();
   await expect(page.getByText('Детали ингредиента')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByText('Детали ингредиента')).toBeHidden();
-  await expect(page).toHaveURL('/');
+  await expect(page).toHaveURL(/\/react-burger\/(#\/)?$/);
 
   await dropIngredient(`ingredient-${bun._id}`);
   await dropIngredient(`ingredient-${main._id}`);
