@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { TBurger, TBurgerIngredient, TIngredient } from '@utils/types';
 
-const initialState: TBurger = {
+export const initialState: TBurger = {
   bun: null,
   ingredients: [],
 };

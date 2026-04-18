@@ -23,7 +23,11 @@ export const IngredientCard = ({
 
   return (
     <>
-      <div className={styles.ingredient_card} ref={dragRef}>
+      <div
+        className={styles.ingredient_card}
+        data-test={`ingredient-${ingredient._id}`}
+        ref={dragRef}
+      >
         <div className={styles.ingredient_counter}>
           {count > 0 && <Counter count={count} />}
         </div>

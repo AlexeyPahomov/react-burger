@@ -65,7 +65,11 @@ export const BurgerConstructor = (): React.JSX.Element => {
           <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
-      <div className={`${styles.column}`} ref={dropRef}>
+      <div
+        className={`${styles.column}`}
+        data-test="constructor-drop-area"
+        ref={dropRef}
+      >
         <ConstructorElement
           text={bun ? `${bun.name} (верх)` : defaultText.bun}
           thumbnail={bun?.image ?? '_'}

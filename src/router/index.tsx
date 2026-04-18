@@ -15,9 +15,9 @@ import {
   UserPage,
   FeedPage,
 } from '@/pages';
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter } from 'react-router-dom';
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: '/',
     element: <App />,

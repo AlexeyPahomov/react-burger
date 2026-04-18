@@ -7,7 +7,12 @@ import {
 } from '@/utils/tokens';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import type { TOrder, TCreateOrderResponse, TFeedWsResponse } from '@/utils/types';
+import type {
+  TCreateOrderResponse,
+  TFeedWsResponse,
+  TOrder,
+  TOrderStatus,
+} from '@/utils/types';
 
 const initialFeedState: TFeedWsResponse = {
   success: true,
@@ -21,6 +26,9 @@ type TFeedWsErrorResponse = {
   message: string;
 };
 
+const isOrderStatus = (value: unknown): value is TOrderStatus =>
+  value === 'done' || value === 'pending' || value === 'created';
+
 const parseFeedOrder = (value: unknown): TFeedWsResponse['orders'][number] | null => {
   if (!value || typeof value !== 'object') {
     return null;
@@ -31,7 +39,7 @@ const parseFeedOrder = (value: unknown): TFeedWsResponse['orders'][number] | nul
     typeof candidate._id !== 'string' ||
     !Array.isArray(candidate.ingredients) ||
     !candidate.ingredients.every((item) => typeof item === 'string') ||
-    typeof candidate.status !== 'string' ||
+    !isOrderStatus(candidate.status) ||
     typeof candidate.number !== 'number' ||
     typeof candidate.createdAt !== 'string' ||
     typeof candidate.updatedAt !== 'string'
